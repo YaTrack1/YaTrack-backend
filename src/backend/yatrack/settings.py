@@ -43,6 +43,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'api.apps.ApiConfig',
+    'drf_yasg',
+    'djoser',
 ]
 
 MIDDLEWARE = [
@@ -151,8 +154,8 @@ DJOSER = {
         "user_list": ["rest_framework.permissions.AllowAny"],
     },
     "SERIALIZERS": {
-        "user": "api.serializers.UserSerializer",
-        "current_user": "api.serializers.UserSerializer",
+        # "user": "api.serializers.UserSerializer",
+        # "current_user": "api.serializers.UserSerializer",
         "user_create": "djoser.serializers.UserCreateSerializer",
     },
 }
