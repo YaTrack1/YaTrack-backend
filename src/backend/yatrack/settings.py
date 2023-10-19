@@ -157,4 +157,4 @@ DJOSER = {
     },
 }
 
-AUTH_USER_MODEL = "user.User"
+# AUTH_USER_MODEL = "user.User"
