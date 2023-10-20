@@ -61,7 +61,8 @@ class User(AbstractUser):
     )
 
     class Meta:
-        abstract = True
+        verbose_name = "Пользователь"
+        verbose_name_plural = "Пользователи"
 
     def __str__(self):
         return f"{self.username}: {self.email}"
@@ -89,7 +90,6 @@ class User(AbstractUser):
 
 
 class Employer(User):
-    pass
 
     class Meta:
         verbose_name = "Наниматель"
@@ -97,10 +97,10 @@ class Employer(User):
 
 
 class Candidate(User):
-    photo = models.ImageField(
-        "Фото",
-        upload_to="photo/",
-    )
+    # photo = models.ImageField(
+    #     "Фото",
+    #     upload_to="photo/",
+    # )
     telegram = models.CharField("Телеграм")
     whatsapp = models.CharField("WhatsApp")
     gender = models.CharField("Пол")

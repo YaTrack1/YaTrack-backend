@@ -43,9 +43,14 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+
     "api.apps.ApiConfig",
-    "drf_yasg",
-    "djoser",
+    "user.apps.UserConfig",
+    "rest_framework",  # isort:ignore
+    "rest_framework.authtoken",  # isort:ignore
+    "djoser",  # isort:ignore
+    "django_filters",  # isort:ignore
+    "drf_yasg",  # isort:ignore
 ]
 
 MIDDLEWARE = [
@@ -77,7 +82,6 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = "yatrack.wsgi.application"
-
 
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
@@ -158,7 +162,7 @@ DJOSER = {
     },
 }
 
-# AUTH_USER_MODEL = "user.User"
+AUTH_USER_MODEL = "user.User"
 
 
 # Константы----------------------------
