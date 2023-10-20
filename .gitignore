@@ -165,8 +165,3 @@ cython_debug/
 .LSOverride
 
 .vscode/
-
-
-# Ngrok
-.ngrok.yml
-ngrok.yml
