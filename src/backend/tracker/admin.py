@@ -14,9 +14,9 @@ class VacancyAdmin(admin.ModelAdmin):
     list_display = ('id', 'name')
 
 
-@admin.register(Resume)
-class ResumeAdmin(admin.ModelAdmin):
-    pass
+# @admin.register(Resume)
+# class ResumeAdmin(admin.ModelAdmin):
+#     pass
 
 
 class ResumeInline(admin.StackedInline):
@@ -26,4 +26,10 @@ class ResumeInline(admin.StackedInline):
 
 @admin.register(Candidate)
 class CandidateAdmin(admin.ModelAdmin):
+    list_display = (
+        "username",
+        "first_name",
+        "last_name",
+        "last_visit",
+    )
     inlines = (ResumeInline,)
