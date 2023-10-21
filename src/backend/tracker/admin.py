@@ -1,4 +1,4 @@
-from django.contrib import admin
+# from django.contrib import admin
 
 from tracker.models import (City, Resume, ResumeSkill, Skill, Vacancy,
                             VacancySkill,)

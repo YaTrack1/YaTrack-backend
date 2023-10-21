@@ -1,6 +1,6 @@
 # YaTrack
 
-![leyan_workflow](https://github.com/LeYan15/YaTrack_backend/actions/workflows/yatrack_workflow.yml/badge.svg)
+![yatrack_workflow](https://github.com/YaTrack1/YaTrack-backend/actions/workflows/yatrack_workflow.yml/badge.svg)
 
 ## Описание проекта
 Внутренний сервис найма.
@@ -8,7 +8,7 @@
 > тут будет подробное описание
 
 ## Стек технологий
-![Python](https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54) ![Django](https://img.shields.io/badge/django-%23092E20.svg?style=for-the-badge&logo=django&logoColor=white) ![DjangoREST](https://img.shields.io/badge/DJANGO-REST-ff1709?style=for-the-badge&logo=django&logoColor=white&color=ff1709&labelColor=gray) ![Swagger](https://img.shields.io/badge/-Swagger-%23Clojure?style=for-the-badge&logo=swagger&logoColor=white) ![Docker](https://img.shields.io/badge/docker-%230db7ed.svg?style=for-the-badge&logo=docker&logoColor=white) ![Postgres](https://img.shields.io/badge/postgres-%23316192.svg?style=for-the-badge&logo=postgresql&logoColor=white) ![Nginx](https://img.shields.io/badge/nginx-%23009639.svg?style=for-the-badge&logo=nginx&logoColor=white) 
+![Python](https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54) ![Django](https://img.shields.io/badge/django-%23092E20.svg?style=for-the-badge&logo=django&logoColor=white) ![DjangoREST](https://img.shields.io/badge/DJANGO-REST-ff1709?style=for-the-badge&logo=django&logoColor=white&color=ff1709&labelColor=gray) ![Swagger](https://img.shields.io/badge/-Swagger-%23Clojure?style=for-the-badge&logo=swagger&logoColor=white) ![Docker](https://img.shields.io/badge/docker-%230db7ed.svg?style=for-the-badge&logo=docker&logoColor=white) ![Postgres](https://img.shields.io/badge/postgres-%23316192.svg?style=for-the-badge&logo=postgresql&logoColor=white) ![Nginx](https://img.shields.io/badge/nginx-%23009639.svg?style=for-the-badge&logo=nginx&logoColor=white)
 
 
 <details><summary><h2>Адрес проекта</h2></summary>
@@ -112,19 +112,19 @@
         python src/backend/manage.py makemigrations
         ```
         ```sh
-        python src/backend/manage.py makemigrations 
+        python src/backend/manage.py makemigrations
         ```
 
          ```sh
-        python src/backend/manage.py makemigrations 
+        python src/backend/manage.py makemigrations
          ```
 
          ```sh
-        python src/backend/manage.py makemigrations 
+        python src/backend/manage.py makemigrations
          ```
 
          ```sh
-        python src/backend/manage.py makemigrations 
+        python src/backend/manage.py makemigrations
         ```
 
     * Примените миграции

@@ -91,18 +91,28 @@ class User(AbstractUser):
 
 class Employer(User):
 
+    date_create = models.DateTimeField()
+
     class Meta:
         verbose_name = "Наниматель"
         verbose_name_plural = "Наниматели"
+        default_related_name = "employers"
 
 
 class Candidate(User):
+<<<<<<< HEAD
     last_visit = models.DateTimeField(
         "Последнее время онлайна",
         auto_now_add=True,
     )
+=======
+
+    birthday = models.DateField("День рождения")
+    date_create = models.DateTimeField()
+>>>>>>> develop
 
     class Meta:
         verbose_name = "Кандидат"
         verbose_name_plural = "Кандидаты"
+        default_related_name = "candidates"
         ordering = ("username",)
