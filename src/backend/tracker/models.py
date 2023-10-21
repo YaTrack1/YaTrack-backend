@@ -4,6 +4,23 @@ from django.core.validators import MaxValueValidator, MinValueValidator
 from user.models import Candidate
 
 
+class City(models.Model):
+    """Модель городов"""
+    name = models.CharField(max_length=50,
+                            unique=True,
+                            verbose_name='Название',
+                            help_text='Название города',)
+
+    class Meta:
+        ordering = ['name']
+        verbose_name = 'Город'
+        verbose_name_plural = 'Города'
+
+    def __str__(self):
+        return self.name
+
+
+
 class Skill(models.Model):
     """Модель тегов."""
     name = models.CharField(max_length=50,
@@ -51,11 +68,9 @@ class Vacancy(models.Model):
         return self.name
 
 
-MIN_WEIGHT_SKILL, MAX_WEIGHT_SKILL = 1, 5
-
-
 class VacancySkill(models.Model):
     """Промежуточная Модель Вакансии и скиллов."""
+    MIN_WEIGHT_SKILL, MAX_WEIGHT_SKILL = 1, 5
     vacancy = models.ForeignKey(
         verbose_name="Вакансии",
         help_text='В каких вакансиях',
@@ -122,12 +137,11 @@ class Resume(models.Model):
         HOLIDAY = 2, 'В отпуске'
         FOUND = 3, 'Найден'
 
-    candidate = models.OneToOneField(
+    candidate = models.ForeignKey(
         Candidate,
         help_text='Кандидат',
         verbose_name='Кандидат',
         on_delete=models.CASCADE,
-        primary_key=True,
         related_name='resume',
     )
     # photo = models.ImageField(
@@ -140,10 +154,12 @@ class Resume(models.Model):
         verbose_name='Пол',
         help_text='Пол кандидата',
     )
-    city = models.CharField(
-        max_length=50,
+    city = models.ForeignKey(
+        City,
+        help_text='Город кондидата',
         verbose_name='Город',
-        help_text='Город',
+        on_delete=models.CASCADE,
+        related_name='candidate',
     )
     telegram = models.CharField(
         max_length=50,
