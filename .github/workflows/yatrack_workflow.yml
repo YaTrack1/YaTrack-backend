@@ -36,4 +36,4 @@ jobs:
         echo '    !**/migrations/0001_initial.py' >> setup.cfg
         echo 'per-file-ignores =' >> setup.cfg
         echo '    */settings.py:E501' >> setup.cfg
-        python -m flake8
+        python -m flake8 src/backend/
