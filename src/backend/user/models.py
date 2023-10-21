@@ -101,10 +101,10 @@ class Candidate(User):
     #     "Фото",
     #     upload_to="photo/",
     # )
-    telegram = models.CharField("Телеграм")
-    whatsapp = models.CharField("WhatsApp")
-    gender = models.CharField("Пол")
-    city = models.CharField("Город")
+    telegram = models.CharField("Телеграм", max_length=50)
+    whatsapp = models.CharField("WhatsApp", max_length=50)
+    gender = models.CharField("Пол", max_length=50)
+    city = models.CharField("Город", max_length=50)
     birthday = models.DateField("День рождения")
     last_visit = models.DateTimeField("Последнее время онлайна")
 
