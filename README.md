@@ -1,6 +1,6 @@
 # YaTrack
 
-![leyan_workflow](https://github.com/LeYan15/YaTrack_backend/actions/workflows/yatrack_workflow.yml/badge.svg)
+![yatrack_workflow](https://github.com/YaTrack1/YaTrack-backend/actions/workflows/yatrack_workflow.yml/badge.svg)
 
 ## Описание проекта
 Внутренний сервис найма.
