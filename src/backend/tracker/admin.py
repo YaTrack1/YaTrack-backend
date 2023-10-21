@@ -1,6 +1,7 @@
 from django.contrib import admin
 
-from tracker.models import Vacancy, Skill, VacancySkill
+from tracker.models import Resume, Skill, Vacancy
+from user.models import Candidate
 
 
 @admin.register(Skill)
@@ -8,12 +9,21 @@ class SkillAdmin(admin.ModelAdmin):
     list_display = ('id', 'name')
 
 
-class VacancySkillInline(admin.TabularInline):
-    model = VacancySkill
-    extra = 0
-
-
 @admin.register(Vacancy)
 class VacancyAdmin(admin.ModelAdmin):
     list_display = ('id', 'name')
-    inlines = (VacancySkillInline,)
+
+
+@admin.register(Resume)
+class ResumeAdmin(admin.ModelAdmin):
+    pass
+
+
+class ResumeInline(admin.StackedInline):
+    model = Resume
+    extra = 0
+
+
+@admin.register(Candidate)
+class CandidateAdmin(admin.ModelAdmin):
+    inlines = (ResumeInline,)

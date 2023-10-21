@@ -97,16 +97,10 @@ class Employer(User):
 
 
 class Candidate(User):
-    # photo = models.ImageField(
-    #     "Фото",
-    #     upload_to="photo/",
-    # )
-    telegram = models.CharField("Телеграм", max_length=50)
-    whatsapp = models.CharField("WhatsApp", max_length=50)
-    gender = models.CharField("Пол", max_length=50)
-    city = models.CharField("Город", max_length=50)
-    birthday = models.DateField("День рождения")
-    last_visit = models.DateTimeField("Последнее время онлайна")
+    last_visit = models.DateTimeField(
+        "Последнее время онлайна",
+        auto_now_add=True,
+    )
 
     class Meta:
         verbose_name = "Кандидат"
