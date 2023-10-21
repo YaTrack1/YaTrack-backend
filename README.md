@@ -28,7 +28,11 @@
 **Handlers**
 
 ```sh
-тут ендпойнты
+/api/auth/users/ регистрация
+/api/auth/token/login вход
+/api/auth/token/logout выход
+
+
 ```
 </details>
 
@@ -102,29 +106,17 @@
 
 1. *Выполните миграции*:
 
-    * Инициализируйте миграции
+    * Инициализируйте миграции (опционально)
         ```sh
         python src/backend/manage.py migrate
         ```
 
     * Создайте миграции
         ```sh
-        python src/backend/manage.py makemigrations
+        python src/backend/manage.py makemigrations user
         ```
         ```sh
-        python src/backend/manage.py makemigrations
-        ```
-
-         ```sh
-        python src/backend/manage.py makemigrations
-         ```
-
-         ```sh
-        python src/backend/manage.py makemigrations
-         ```
-
-         ```sh
-        python src/backend/manage.py makemigrations
+        python src/backend/manage.py makemigrations tracker
         ```
 
     * Примените миграции
@@ -144,6 +136,8 @@
         mail: admin@admin.ru
         password: admin
         password (again): admin
+
+    > При входе логин указывать с большой буквы `Admin`
 
 ---
 

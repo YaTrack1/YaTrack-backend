@@ -1,22 +1,13 @@
 # from rest_framework import permissions
 
 
-# class IsAdmin(permissions.BasePermission):
-#     """Доступ только админу."""
-#     def has_object_permission(self, request, view, obj):
-#         return (
-#     request.method in permissions.SAFE_METHODS
-#     or obj.employer == request.employer
-# )
-
-
 # class IsEmployer(permissions.BasePermission):
 #     """Доступ только нанимателю."""
 
 #     def has_object_permission(self, request, view, obj):
 #         return (
 #             request.method in permissions.SAFE_METHODS
-#             or obj.employer == request.employer
+#             or obj.user == request.employer
 #         )
 
 
@@ -26,5 +17,5 @@
 #     def has_object_permission(self, request, view, obj):
 #         return (
 #             request.method in permissions.SAFE_METHODS
-#             or obj.candidate == request.candidate
+#             or obj.user == request.candidate
 #         )
