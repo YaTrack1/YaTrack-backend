@@ -42,4 +42,6 @@ urlpatterns = (
 )
 
 if settings.DEBUG:
-    urlpatterns += tuple(static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT))
+    urlpatterns += tuple(
+        static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    )
