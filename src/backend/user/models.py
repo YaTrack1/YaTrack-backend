@@ -59,10 +59,6 @@ class User(AbstractUser):
         "Активирован",
         default=True,
     )
-    is_superuser = models.BooleanField(
-        "Админ",
-        default=True,
-    )
 
     class Meta:
         verbose_name = "Пользователь"
@@ -95,28 +91,21 @@ class User(AbstractUser):
 
 class Employer(User):
 
-    is_staff = models.BooleanField(default=True)
-    is_superuser = models.BooleanField(
-        "Админ",
-        default=False,
-    )
     date_create = models.DateTimeField()
 
     class Meta:
         verbose_name = "Наниматель"
         verbose_name_plural = "Наниматели"
+        default_related_name = "employers"
 
 
 class Candidate(User):
 
     birthday = models.DateField("День рождения")
-    is_superuser = models.BooleanField(
-        "Админ",
-        default=False,
-    )
     date_create = models.DateTimeField()
 
     class Meta:
         verbose_name = "Кандидат"
         verbose_name_plural = "Кандидаты"
+        default_related_name = "candidates"
         ordering = ("username",)
