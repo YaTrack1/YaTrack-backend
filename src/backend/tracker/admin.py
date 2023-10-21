@@ -2,7 +2,7 @@ from django.contrib import admin
 
 from tracker.models import (City, Resume, ResumeSkill, Skill, Vacancy,
                             VacancySkill,)
-from user.models import Candidate
+from tracker.models import Candidate
 
 
 admin.site.register(City)

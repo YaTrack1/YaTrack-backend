@@ -1,7 +1,33 @@
 from django.db import models
 from django.core.validators import MaxValueValidator, MinValueValidator
 
-from user.models import Candidate
+from user.models import User
+
+class Employer(User):
+
+    date_create = models.DateTimeField()
+
+    class Meta:
+        verbose_name = "Наниматель"
+        verbose_name_plural = "Наниматели"
+        default_related_name = "employers"
+
+
+class Candidate(User):
+    last_visit = models.DateTimeField(
+        "Последнее время онлайна",
+        auto_now_add=True,
+    )
+
+    birthday = models.DateField("День рождения")
+    date_create = models.DateTimeField()
+
+    class Meta:
+        verbose_name = "Кандидат"
+        verbose_name_plural = "Кандидаты"
+        default_related_name = "candidates"
+        ordering = ("username",)
+
 
 
 class City(models.Model):
