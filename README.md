@@ -28,9 +28,9 @@
 **Handlers**
 
 ```sh
-/api/auth/users/ регистрация
-/api/auth/token/login вход
-/api/auth/token/logout выход
+/api/auth/users/  # регистрация пользователя
+/api/auth/token/login  # вход систему
+/api/auth/token/logout  # выход из системы
 
 
 ```
