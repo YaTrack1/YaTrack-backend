@@ -1,4 +1,4 @@
-from django.urls import include, path, re_path
+from django.urls import include, re_path
 from rest_framework.routers import DefaultRouter
 
 from api.views import EmployerViewset
@@ -18,14 +18,23 @@ router.register("employer", EmployerViewset, basename="employer")
 
 # router.register("resume", ResumeViewset, basename="resume")
 
-# router.register("tracker/comparison", ComparisonViewset, basename="tracker")
-# router.register("tracker/favorite", FavoriteViewset, basename="favorite")
+# router.register("tracker/", TrackerViewset, basename="tracker"
 # router.register(
-# "tracker/invitation", InvitationViewset, basename="invitation")
+#     r"tracker/(?P<vacancy_id>\d+)/comparison",
+#     ComparisonViewset,
+#     basename="comparison"
+# )
+# router.register(
+#     r"tracker/(?P<vacancy_id>\d+)/favorite",
+#     FavoriteViewset,
+#     basename="favorite"
+# )
+# router.register(
+#     r"tracker/(?P<vacancy_id>\d+)/invitation",
+#     InvitationViewset,
+#     basename="invitation"
+# )
 
 urlpatterns = [
     re_path(r"^", include(router.urls)),
-    path("auth/", include("djoser.urls")),
-    re_path(r"auth/", include("djoser.urls.authtoken")),
-    re_path(r"auth/", include("djoser.urls.jwt")),
 ]

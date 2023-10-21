@@ -28,11 +28,23 @@
 **Handlers**
 
 ```sh
-/api/auth/users/  # регистрация пользователя
-/api/auth/token/login  # вход систему
-/api/auth/token/logout  # выход из системы
+auth/users/  # регистрация пользователя
 
+auth/token/login/  # вход из системы
+auth/token/logout/  # выход в систему
 
+api/employer/  # Профиль нанимателя(HR)
+
+api/vacancy/  # Описание вакансии
+api/vacancy/create/step-1/
+api/vacancy/create/step-2/
+
+api/resume/  # Резюме кандидата
+
+api/tracker/  # Трекер вакансий
+api/tracker/<vacancy_id>/comparison/  # Сравнение подходящих вакансий
+api/tracker/<vacancy_id>/favorite/  # Избранные вакансии кандидатов
+api/tracker/<vacancy_id>/invitation/  # Приглашенные кандидаты
 ```
 </details>
 
