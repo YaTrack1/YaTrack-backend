@@ -34,31 +34,18 @@ class EmployerAdmin(admin.ModelAdmin):
     empty_value_display = "--пусто--"
 
 
-<<<<<<< HEAD
 # @admin.register(Candidate)
 # class CandidateAdmin(admin.ModelAdmin):
 #     list_display = (
 #         "username",
 #         "first_name",
 #         "last_name",
-#         "last_visit",
+#         "birthday",
+#         "email",
+#         "date_create",
 #     )
-#     search_fields = ()
+#     search_fields = (
+#         "username",
+#         "email",
+#     )
 #     empty_value_display = "--пусто--"
-=======
-@admin.register(Candidate)
-class CandidateAdmin(admin.ModelAdmin):
-    list_display = (
-        "username",
-        "first_name",
-        "last_name",
-        "birthday",
-        "email",
-        "date_create",
-    )
-    search_fields = (
-        "username",
-        "email",
-    )
-    empty_value_display = "--пусто--"
->>>>>>> develop

@@ -1,4 +1,4 @@
-# from django.contrib import admin
+from django.contrib import admin
 
 from tracker.models import (City, Resume, ResumeSkill, Skill, Vacancy,
                             VacancySkill,)
@@ -45,6 +45,13 @@ class CandidateAdmin(admin.ModelAdmin):
         "username",
         "first_name",
         "last_name",
-        "last_visit",
+        "birthday",
+        "email",
+        "date_create",
     )
+    search_fields = (
+        "username",
+        "email",
+    )
+    empty_value_display = "--пусто--"
     inlines = (ResumeInline,)

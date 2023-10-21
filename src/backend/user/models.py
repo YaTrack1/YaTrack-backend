@@ -100,16 +100,13 @@ class Employer(User):
 
 
 class Candidate(User):
-<<<<<<< HEAD
     last_visit = models.DateTimeField(
         "Последнее время онлайна",
         auto_now_add=True,
     )
-=======
 
     birthday = models.DateField("День рождения")
     date_create = models.DateTimeField()
->>>>>>> develop
 
     class Meta:
         verbose_name = "Кандидат"
