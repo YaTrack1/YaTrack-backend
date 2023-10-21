@@ -53,6 +53,7 @@ class Vacancy(models.Model):
 
 MIN_WEIGHT_SKILL, MAX_WEIGHT_SKILL = 1, 5
 
+
 class VacancySkill(models.Model):
     """Промежуточная Модель Вакансии и скиллов."""
     vacancy = models.ForeignKey(
@@ -159,8 +160,8 @@ class Resume(models.Model):
         help_text='О себе',
     )
     birthday = models.DateField(
-        verbose_name='О себе',
-        help_text='О себе',
+        verbose_name='День рождения',
+        help_text='День рождкния',
         null=True,
         blank=True,
     )
@@ -176,11 +177,11 @@ class Resume(models.Model):
         verbose_name='Статус',
         help_text='Стадия поиска работы кандидата',
     )
-
     skills = models.ManyToManyField(
         verbose_name="Навыки",
         help_text='Навыки',
-        related_name="resume",
+        related_name="resumes",
+        through='tracker.ResumeSkill',
         to=Skill,
     )
 
@@ -191,3 +192,52 @@ class Resume(models.Model):
 
     def __str__(self):
         return f'{self.candidate}' if hasattr(self, 'match') else ''
+
+
+class ResumeSkill(models.Model):
+    """Промежуточная Модель резюме и скиллов."""
+    resume = models.ForeignKey(
+        verbose_name="Резюме",
+        help_text='В каких резюме',
+        related_name="skill",
+        to=Resume,
+        on_delete=models.CASCADE,
+    )
+    skill = models.ForeignKey(
+        verbose_name="Навыки",
+        help_text='Связанный навык',
+        related_name="resume",
+        to=Skill,
+        on_delete=models.CASCADE,
+    )
+    level = models.PositiveSmallIntegerField(
+        verbose_name='Уровень',
+        help_text='Уровень навыка',
+        default=1,  # ???
+        # validators=(
+        #     MinValueValidator(
+        #         MIN_WEIGHT_SKILL,
+        #         f'Как минимум {MIN_WEIGHT_SKILL}',
+        #     ),
+        #     MaxValueValidator(
+        #         MAX_WEIGHT_SKILL,
+        #         f'Как максимум {MAX_WEIGHT_SKILL}',
+        #     ),
+        # ),
+    )
+
+    class Meta:
+        verbose_name = "Навык"
+        verbose_name_plural = "Навыки"
+        constraints = (
+            models.UniqueConstraint(
+                fields=(
+                    "resume",
+                    "skill",
+                ),
+                name="unique_resume_skill",
+            ),
+        )
+
+    def __str__(self):
+        return f'{self.skill}({self.resume}) - {self.level}'
