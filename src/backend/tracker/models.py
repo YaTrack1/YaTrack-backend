@@ -3,6 +3,7 @@ from django.core.validators import MaxValueValidator, MinValueValidator
 
 from user.models import User
 
+
 class Employer(User):
 
     date_create = models.DateTimeField()
@@ -29,7 +30,6 @@ class Candidate(User):
         ordering = ("username",)
 
 
-
 class City(models.Model):
     """Модель городов"""
     name = models.CharField(max_length=50,
@@ -44,7 +44,6 @@ class City(models.Model):
 
     def __str__(self):
         return self.name
-
 
 
 class Skill(models.Model):

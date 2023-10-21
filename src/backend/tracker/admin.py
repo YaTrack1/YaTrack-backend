@@ -23,6 +23,7 @@ class VacancyAdmin(admin.ModelAdmin):
     list_display = ('id', 'name')
     inlines = (VacancySkillInline,)
 
+
 class ResumeSkillInline(admin.TabularInline):
     model = ResumeSkill
     extra = 0
