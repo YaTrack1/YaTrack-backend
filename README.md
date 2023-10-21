@@ -28,10 +28,10 @@
 **Handlers**
 
 ```sh
-auth/users/  # регистрация
+auth/users/  # регистрация пользователя
 
-auth/token/login/  # вход
-auth/token/logout/  # выход
+auth/token/login/  # вход из системы
+auth/token/logout/  # выход в систему
 
 api/employer/  # Профиль нанимателя(HR)
 
