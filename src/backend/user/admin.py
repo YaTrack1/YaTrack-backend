@@ -25,8 +25,12 @@ class EmployerAdmin(admin.ModelAdmin):
         "first_name",
         "last_name",
         "email",
+        "date_create",
     )
-    search_fields = ()
+    search_fields = (
+        "username",
+        "email",
+    )
     empty_value_display = "--пусто--"
 
 
@@ -36,13 +40,12 @@ class CandidateAdmin(admin.ModelAdmin):
         "username",
         "first_name",
         "last_name",
-        "gender",
-        "email",
-        "telegram",
-        "city",
         "birthday",
-        "last_visit"
-
+        "email",
+        "date_create",
     )
-    search_fields = ()
+    search_fields = (
+        "username",
+        "email",
+    )
     empty_value_display = "--пусто--"

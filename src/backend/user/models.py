@@ -59,6 +59,10 @@ class User(AbstractUser):
         "Активирован",
         default=True,
     )
+    is_superuser = models.BooleanField(
+        "Админ",
+        default=True,
+    )
 
     class Meta:
         verbose_name = "Пользователь"
@@ -91,22 +95,26 @@ class User(AbstractUser):
 
 class Employer(User):
 
+    is_staff = models.BooleanField(default=True)
+    is_superuser = models.BooleanField(
+        "Админ",
+        default=False,
+    )
+    date_create = models.DateTimeField()
+
     class Meta:
         verbose_name = "Наниматель"
         verbose_name_plural = "Наниматели"
 
 
 class Candidate(User):
-    # photo = models.ImageField(
-    #     "Фото",
-    #     upload_to="photo/",
-    # )
-    telegram = models.CharField("Телеграм")
-    whatsapp = models.CharField("WhatsApp")
-    gender = models.CharField("Пол")
-    city = models.CharField("Город")
+
     birthday = models.DateField("День рождения")
-    last_visit = models.DateTimeField("Последнее время онлайна")
+    is_superuser = models.BooleanField(
+        "Админ",
+        default=False,
+    )
+    date_create = models.DateTimeField()
 
     class Meta:
         verbose_name = "Кандидат"
