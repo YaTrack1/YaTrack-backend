@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 
 import os
 from pathlib import Path
+from datetime import timedelta
 
 from django.core.management.utils import get_random_secret_key
 from dotenv import load_dotenv
@@ -43,7 +44,6 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-
     "api.apps.ApiConfig",
     "user.apps.UserConfig",
     "rest_framework",  # isort:ignore
@@ -88,7 +88,9 @@ WSGI_APPLICATION = "yatrack.wsgi.application"
 
 DATABASES = {
     "default": {
-        "ENGINE": os.getenv("DB_ENGINE", default="django.db.backends.postgresql"),
+        "ENGINE": os.getenv(
+            "DB_ENGINE", default="django.db.backends.postgresql"
+        ),
         "NAME": os.getenv("DB_NAME", default="yatrack"),
         "USER": os.getenv("PG_USER", default="postgres"),
         "PASSWORD": os.getenv("PG_PASSWORD", default="postgres"),
@@ -144,22 +146,29 @@ REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": [
         "rest_framework.authentication.TokenAuthentication",
     ],
-    "DEFAULT_FILTER_BACKENDS": ("django_filters.rest_framework.DjangoFilterBackend",),
+    "DEFAULT_FILTER_BACKENDS": (
+        "django_filters.rest_framework.DjangoFilterBackend",
+    ),
 }
 
 DJOSER = {
-    "LOGIN_FIELD": "email",
-    "SEND_ACTIVATION_EMAIL": False,
-    "HIDE_USERS": False,
-    "PERMISSIONS": {
-        "user": ["djoser.permissions.CurrentUserOrAdminOrReadOnly"],
-        "user_list": ["rest_framework.permissions.AllowAny"],
-    },
-    "SERIALIZERS": {
-        # "user": "api.serializers.UserSerializer",
-        # "current_user": "api.serializers.UserSerializer",
-        "user_create": "djoser.serializers.UserCreateSerializer",
-    },
+    # "LOGIN_FIELD": "email",
+    # "SEND_ACTIVATION_EMAIL": False,
+    # "HIDE_USERS": False,
+    # "PERMISSIONS": {
+    #     "user": ["djoser.permissions.CurrentUserOrAdminOrReadOnly"],
+    #     "user_list": ["rest_framework.permissions.AllowAny"],
+    # },
+    # "SERIALIZERS": {
+    #     # "user": "api.serializers.UserSerializer",
+    #     # "current_user": "api.serializers.UserSerializer",
+    #     "user_create": "djoser.serializers.UserCreateSerializer",
+    # },
+}
+SIMPLE_JWT = {
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=5),
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
+    "AUTH_HEADER_TYPES": ("Bearer",),
 }
 
 AUTH_USER_MODEL = "user.User"

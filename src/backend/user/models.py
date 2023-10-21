@@ -65,7 +65,7 @@ class User(AbstractUser):
         verbose_name_plural = "Пользователи"
 
     def __str__(self):
-        return f"{self.username}: {self.email}"
+        return self.username
 
     @classmethod
     def normalize_email(cls, email: str):
@@ -87,25 +87,3 @@ class User(AbstractUser):
         self.first_name = self.__normalize_human_names(self.first_name)
         self.last_name = self.__normalize_human_names(self.last_name)
         super().clean()
-
-
-class Employer(User):
-
-    date_create = models.DateTimeField()
-
-    class Meta:
-        verbose_name = "Наниматель"
-        verbose_name_plural = "Наниматели"
-        default_related_name = "employers"
-
-
-class Candidate(User):
-
-    birthday = models.DateField("День рождения")
-    date_create = models.DateTimeField()
-
-    class Meta:
-        verbose_name = "Кандидат"
-        verbose_name_plural = "Кандидаты"
-        default_related_name = "candidates"
-        ordering = ("username",)
