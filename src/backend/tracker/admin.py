@@ -1,27 +1,26 @@
 from django.contrib import admin
 
-from tracker.models import (City, Resume, ResumeSkill, Skill, Vacancy,
-                            VacancySkill,)
-from tracker.models import Candidate
-
+from tracker.models import (City, EmployerVacancies, EmployerOrganization,
+                            Organization, Resume, ResumeSkill, )
+from tracker.models import Candidate, Employer
+from vacancy.models import Skill, Vacancy, VacancySkill
 
 admin.site.register(City)
+admin.site.register(Organization)
 
-
-@admin.register(Skill)
-class SkillAdmin(admin.ModelAdmin):
-    list_display = ('id', 'name')
-
-
-class VacancySkillInline(admin.TabularInline):
-    model = VacancySkill
+class EmployerOrganizationInline(admin.StackedInline):
+    model = EmployerOrganization
     extra = 0
 
 
-@admin.register(Vacancy)
-class VacancyAdmin(admin.ModelAdmin):
-    list_display = ('id', 'name')
-    inlines = (VacancySkillInline,)
+class EmployerVacanciesInline(admin.StackedInline):
+    model = EmployerVacancies
+    extra = 0
+
+
+@admin.register(Employer)
+class EmployerAdmin(admin.ModelAdmin):
+    inlines = (EmployerOrganizationInline, EmployerVacanciesInline,)
 
 
 class ResumeSkillInline(admin.TabularInline):
