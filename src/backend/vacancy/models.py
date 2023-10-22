@@ -47,6 +47,7 @@ class JobTitle(NameModel):
         through="JobSkill",
         to=Skill,
     )
+
     class Meta:
         ordering = ["name"]
         verbose_name = "Должность"
