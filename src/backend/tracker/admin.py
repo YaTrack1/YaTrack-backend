@@ -8,6 +8,7 @@ from vacancy.models import Skill, Vacancy, VacancySkill
 admin.site.register(City)
 admin.site.register(Organization)
 
+
 class EmployerOrganizationInline(admin.StackedInline):
     model = EmployerOrganization
     extra = 0

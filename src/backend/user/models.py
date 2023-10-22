@@ -88,6 +88,7 @@ class User(AbstractUser):
         self.last_name = self.__normalize_human_names(self.last_name)
         super().clean()
 
+
 class Favorite(models.Model):
     """Подписки пользователей друг на друга."""
     clicker = models.ForeignKey(

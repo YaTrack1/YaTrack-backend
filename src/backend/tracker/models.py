@@ -70,22 +70,6 @@ class EmployerOrganization(models.Model):
     )
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 class EmployerVacancies(models.Model):
     """Таблица наниматели - vacancy"""
     employer = models.ForeignKey(
@@ -102,7 +86,6 @@ class EmployerVacancies(models.Model):
         to=Vacancy,
         on_delete=models.CASCADE,
     )
-
 
 
 class Candidate(User):
