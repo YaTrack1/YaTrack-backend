@@ -47,9 +47,9 @@ INSTALLED_APPS = [
     "api.apps.ApiConfig",
     "user.apps.UserConfig",
     "tracker.apps.TrackerConfig",
-    "vacancy.app.VacancyConfig"
-    "resume.app.ResumeConfig"
     "vacancy.apps.VacancyConfig",
+    "resume.apps.ResumeConfig",
+    "employer.apps.EmployerConfig",
     "rest_framework",  # isort:ignore
     "rest_framework.authtoken",  # isort:ignore
     "djoser",  # isort:ignore
