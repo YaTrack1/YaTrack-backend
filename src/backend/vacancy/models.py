@@ -2,16 +2,17 @@ from django.db import models
 from django.core.validators import MaxValueValidator, MinValueValidator
 
 
-class Skill(models.Model):
-    """Модель тегов."""
-
+class NameModel(models.Model):
+    """Модель, которая имеет лишь название."""
     name = models.CharField(
+        verbose_name="Название",
         max_length=50,
         unique=True,
-        verbose_name="Название",
-        help_text="Название навыка",
     )
 
+
+class Skill(NameModel):
+    """Модель Навыков."""
     class Meta:
         ordering = ["name"]
         verbose_name = "Навык"
@@ -21,27 +22,13 @@ class Skill(models.Model):
         return self.name
 
 
-class Vacancy(models.Model):
+class Vacancy(NameModel):
     """Модель Вакансии."""
-
-    name = models.CharField(
-        max_length=50,
-        unique=True,
-        verbose_name="Название",
-        help_text="Название вакансии",
-    )
     description = models.TextField(
         verbose_name="Описание",
         help_text="Описание вакансии",
         null=True,
         blank=True,
-    )
-    skills = models.ManyToManyField(
-        verbose_name="Навыки",
-        help_text="Навыки",
-        related_name="vacancies",
-        through="vacancy.VacancySkill",
-        to=Skill,
     )
 
     class Meta:
@@ -53,21 +40,31 @@ class Vacancy(models.Model):
         return self.name
 
 
-class VacancySkill(models.Model):
-    """Промежуточная Модель Вакансии и скиллов."""
+class JobTitle(NameModel):
+    skills = models.ManyToManyField(
+        verbose_name="Навыки",
+        related_name="job_titles",
+        through="JobSkill",
+        to=Skill,
+    )
+    class Meta:
+        ordering = ["name"]
+        verbose_name = "Должность"
+        verbose_name_plural = "Должности"
 
+
+class JobSkill(models.Model):
+    """Промежуточная Модель Должности и скиллов."""
     MIN_WEIGHT_SKILL, MAX_WEIGHT_SKILL = 1, 5
-    vacancy = models.ForeignKey(
-        verbose_name="Вакансии",
-        help_text="В каких вакансиях",
+    job_title = models.ForeignKey(
+        verbose_name="Должность",
         related_name="skill",
-        to=Vacancy,
+        to=JobTitle,
         on_delete=models.CASCADE,
     )
     skill = models.ForeignKey(
         verbose_name="Навыки",
-        help_text="Связанный навык",
-        related_name="vacancy",
+        related_name="job_title",
         to=Skill,
         on_delete=models.CASCADE,
     )
@@ -93,12 +90,12 @@ class VacancySkill(models.Model):
         constraints = (
             models.UniqueConstraint(
                 fields=(
-                    "vacancy",
+                    "job_title",
                     "skill",
                 ),
-                name="unique_vacancy_skill",
+                name="unique_job_skill",
             ),
         )
 
     def __str__(self):
-        return f"{self.skill}({self.vacancy}) - {self.weight}"
+        return f"{self.skill}({self.job_title}) - {self.weight}"

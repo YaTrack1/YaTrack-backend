@@ -30,35 +30,13 @@ class Organization(models.Model):
         return self.name
 
 
-class Employer(User):
-    """Модельн нанимателя."""
-    vacancies = models.ManyToManyField(
-        verbose_name="Навыки",
-        help_text='Навыки',
-        related_name="employers",
-        through='employer.EmployerVacancies',
-        to=Vacancy,
-    )
-    organization = models.ManyToManyField(
-        verbose_name="Навыки",
-        help_text='Навыки',
-        related_name="employers",
-        through='employer.EmployerOrganization',
-        to=Organization,
-    )
-
-    class Meta:
-        verbose_name = "Наниматель"
-        verbose_name_plural = "Наниматели"
-
-
 class EmployerOrganization(models.Model):
     """Таблица наниматели - их представительство в организации."""
     employer = models.ForeignKey(
         verbose_name="Наниматель",
         help_text='Наниматель',
         related_name="organizations",
-        to=Employer,
+        to=User,
         on_delete=models.CASCADE,
     )
     organization = models.ForeignKey(
@@ -76,7 +54,7 @@ class EmployerVacancies(models.Model):
         verbose_name="Наниматель",
         help_text='Наниматель',
         related_name="vacancy",
-        to=Employer,
+        to=User,
         on_delete=models.CASCADE,
     )
     vacancy = models.ForeignKey(
