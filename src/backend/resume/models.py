@@ -60,7 +60,7 @@ class Resume(models.Model):
         FOUND = 3, "Найден"
 
     candidate = models.ForeignKey(
-        Candidate,
+        User,
         help_text="Кандидат",
         verbose_name="Кандидат",
         on_delete=models.CASCADE,
