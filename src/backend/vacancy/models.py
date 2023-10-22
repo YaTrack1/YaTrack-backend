@@ -1,6 +1,7 @@
 from django.db import models
 from django.core.validators import MaxValueValidator, MinValueValidator
 
+
 class Skill(models.Model):
     """Модель тегов."""
     name = models.CharField(max_length=50,
@@ -96,4 +97,3 @@ class VacancySkill(models.Model):
 
     def __str__(self):
         return f'{self.skill}({self.vacancy}) - {self.weight}'
-
