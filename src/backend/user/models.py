@@ -89,18 +89,45 @@ class User(AbstractUser):
         super().clean()
 
 
+class Employer(User):
+
+    date_create = models.DateTimeField()
+
+    class Meta:
+        verbose_name = "Наниматель"
+        verbose_name_plural = "Наниматели"
+        default_related_name = "employers"
+
+
+class Candidate(User):
+    last_visit = models.DateTimeField(
+        "Последнее время онлайна",
+        auto_now_add=True,
+    )
+
+    birthday = models.DateField("День рождения")
+    date_create = models.DateTimeField()
+
+    class Meta:
+        verbose_name = "Кандидат"
+        verbose_name_plural = "Кандидаты"
+        default_related_name = "candidates"
+        ordering = ("username",)
+
+
 class Favorite(models.Model):
     """Подписки пользователей друг на друга."""
+
     clicker = models.ForeignKey(
         verbose_name="Кто кликнул",
-        help_text='Наниматель',
+        help_text="Наниматель",
         related_name="likeds",
         to=User,
         on_delete=models.CASCADE,
     )
     liked = models.ForeignKey(
         verbose_name="Подписчики",
-        help_text='Наниматель',
+        help_text="Наниматель",
         related_name="clickers",
         to=User,
         on_delete=models.CASCADE,

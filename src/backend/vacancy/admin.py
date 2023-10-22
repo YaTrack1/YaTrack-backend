@@ -5,7 +5,7 @@ from vacancy.models import Skill, Vacancy, VacancySkill
 
 @admin.register(Skill)
 class SkillAdmin(admin.ModelAdmin):
-    list_display = ('id', 'name')
+    list_display = ("id", "name")
 
 
 class VacancySkillInline(admin.TabularInline):
@@ -15,5 +15,5 @@ class VacancySkillInline(admin.TabularInline):
 
 @admin.register(Vacancy)
 class VacancyAdmin(admin.ModelAdmin):
-    list_display = ('id', 'name')
+    list_display = ("id", "name")
     inlines = (VacancySkillInline,)
