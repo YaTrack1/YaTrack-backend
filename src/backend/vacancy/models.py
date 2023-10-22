@@ -1,8 +1,6 @@
 from django.db import models
 from django.core.validators import MaxValueValidator, MinValueValidator
 
-from user.models import Employer
-
 
 class Skill(models.Model):
     """Модель тегов."""
@@ -26,12 +24,6 @@ class Skill(models.Model):
 class Vacancy(models.Model):
     """Модель Вакансии."""
 
-    employer = models.ForeignKey(
-        Employer,
-        on_delete=models.CASCADE,
-        max_length=50,
-        verbose_name="Наниматель",
-    )
     name = models.CharField(
         max_length=50,
         unique=True,
@@ -48,7 +40,7 @@ class Vacancy(models.Model):
         verbose_name="Навыки",
         help_text="Навыки",
         related_name="vacancies",
-        through="tracker.VacancySkill",
+        through="vacancy.VacancySkill",
         to=Skill,
     )
 

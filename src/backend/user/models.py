@@ -113,3 +113,35 @@ class Candidate(User):
         verbose_name_plural = "Кандидаты"
         default_related_name = "candidates"
         ordering = ("username",)
+
+
+class Favorite(models.Model):
+    """Подписки пользователей друг на друга."""
+
+    clicker = models.ForeignKey(
+        verbose_name="Кто кликнул",
+        help_text="Наниматель",
+        related_name="likeds",
+        to=User,
+        on_delete=models.CASCADE,
+    )
+    liked = models.ForeignKey(
+        verbose_name="Подписчики",
+        help_text="Наниматель",
+        related_name="clickers",
+        to=User,
+        on_delete=models.CASCADE,
+    )
+
+    class Meta:
+        verbose_name = "Подписка"
+        verbose_name_plural = "Подписки"
+        constraints = (
+            models.UniqueConstraint(
+                fields=("clicker", "liked"),
+                name="unique_clicker_liked",
+            ),
+        )
+
+    def __str__(self) -> str:
+        return f"{self.clicker.username} -> {self.liked.username}"
