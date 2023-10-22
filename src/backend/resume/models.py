@@ -1,6 +1,7 @@
 from django.db import models
 
-from user.models import Candidate
+
+from user.models import User
 from vacancy.models import Skill
 
 
@@ -21,6 +22,22 @@ class City(models.Model):
 
     def __str__(self):
         return self.name
+
+
+class Candidate(User):
+    last_visit = models.DateTimeField(
+        "Последнее время онлайна",
+        auto_now_add=True,
+    )
+
+    birthday = models.DateField("День рождения")
+    date_create = models.DateTimeField()
+
+    class Meta:
+        verbose_name = "Кандидат"
+        verbose_name_plural = "Кандидаты"
+        default_related_name = "candidates"
+        ordering = ("username",)
 
 
 class Resume(models.Model):
@@ -102,7 +119,7 @@ class Resume(models.Model):
         verbose_name="Навыки",
         help_text="Навыки",
         related_name="resumes",
-        through="tracker.ResumeSkill",
+        through="ResumeSkill",
         to=Skill,
     )
 
