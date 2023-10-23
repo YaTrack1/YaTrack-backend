@@ -56,7 +56,6 @@ class JobTitle(NameModel):
         verbose_name_plural = "Должности"
 
 
-
 class Organization(models.Model):
     """Модель организации нанимателей."""
     name = models.CharField(
