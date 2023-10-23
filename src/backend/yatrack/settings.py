@@ -12,7 +12,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 
 import os
 from pathlib import Path
-from datetime import timedelta
+from datetime import datetime, timedelta
 
 from django.core.management.utils import get_random_secret_key
 from dotenv import load_dotenv
@@ -49,7 +49,7 @@ INSTALLED_APPS = [
     "tracker.apps.TrackerConfig",
     "vacancy.apps.VacancyConfig",
     "resume.apps.ResumeConfig",
-    "employer.apps.EmployerConfig",
+    "core.apps.CoreConfig",
     "rest_framework",  # isort:ignore
     "rest_framework.authtoken",  # isort:ignore
     "djoser",  # isort:ignore
@@ -182,7 +182,19 @@ AUTH_USER_MODEL = "user.User"
 # -------------------------------------
 
 # Модели
+ZERO = 0
 MAX_LENGTH = 150
+
+DATETIME_NOW = datetime.now()
+
+GENDER_FLAG = [("M", "Муж."), ("F", "Жен.")]
+TYPE_WORK = [(0, "Не известно"), (1, "Оффис"), (2, "Гибрид"), (3, "Удаленка")]
+STATUS_FIDED = [
+    (0, "Не известно"),
+    (1, "В поиске"),
+    (2, "В отпуске"),
+    (3, "Найден"),
+]
 
 # Юзер-админ
 MAIL_LENGTH = 255
@@ -201,3 +213,14 @@ LOG_FILE = os.path.join(BASE_DIR / "api/logs/file.log")
 LOG_DIR = os.path.join(BASE_DIR / "api/logs")
 LOG_MESSAGE = "Custom log"
 LOG_PASS_FILTER = "password"
+
+# Парсер
+HELP_TEXT_PARSER = "Загрузка данных из {} файла."
+DELETE_TEXT_PARSER = "Удаление данных {} файла."
+
+DATA_DIR = "data/{}"
+DATA_DELETE = "Данные {} удалены."
+DATA_UPLOADED = "Данные {} уже загружены."
+DATA_LOAD_IN_FILE = "Загрузка данных из {} завершена."
+
+OPTIONS_DELETE = "delete"

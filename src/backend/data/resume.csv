@@ -1,0 +1,11 @@
+title,username,gender,city,telegram,github,about_me,birthday,status_type_work,status_finded,skills
+Python Dev,JohnDoe,M,Moscow,@john_doe,johndoe,Software engineer with a passion for AI and machine learning,1990-05-12,1,2,Python, Java, Machine Learning
+Front Dev,JaneSmith,F,New York,@sarah_smith,sarahsmith,Front-end developer with expertise in HTML CSS and JavaScript,1995-09-25,3,0,HTML, CSS, JavaScript
+Manager,DavidJohnson,M,London,@mike_jones,mikejones,Experienced project manager with a proven track record of delivering projects on time and within budget,1982-07-03,0,1,Project Management, Team Leadership
+Marketing,SarahWilliams,F,Paris,@laura_brown,laurabrown,Marketing specialist with a creative mind and a passion for brand strategy,1988-12-18,2,3,Marketing Strategy, Social Media Management
+Backend Dev,MichaelBrown,M,Berlin,@max_miller,maxmiller,Backend developer with a focus on database management and server optimization,1992-03-08,0,3,Python, SQL, Database Management
+Designer,EmilyMiller,F,Tokyo,@hana_kim,hanakim,UX designer with a keen eye for detail and a user-centric approach to design,1997-11-07,2,1,User Experience Design, Wireframing, Prototyping
+Designer,JamesTaylor,M,Moscow,@alex_green,alexgreen,Graphic designer with a passion for minimalist and clean design aesthetics,1985-02-14,3,0,Adobe Photoshop, Illustrator, Typography
+Secret,OliviaWilson,F,New York,@emily_jackson,emilyjackson,Content writer with a knack for storytelling and a passion for creating engaging and informative content,1993-10-01,2,1,Content Writing, Copywriting
+Consultant,EthanAnderson,M,London,@david_clark,davidclark,IT consultant with a wide range of experience in network administration and cybersecurity,1987-09-09,0,3,Network Administration, Cybersecurity, IT Consulting
+analyst,AvaBaker,F,Paris,@olivia_white,oliviawhite,Data analyst with a strong analytical mindset and a passion for extracting insights from complex datasets,1996-06-23,1,1,Data Analysis, Statistical Modeling, SQL

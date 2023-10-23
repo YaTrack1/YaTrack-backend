@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from user.models import User, Favorite
+from user.models import User, Subscription
 
 
 @admin.register(User)
@@ -17,6 +17,6 @@ class UserAdmin(admin.ModelAdmin):
     empty_value_display = "--пусто--"
 
 
-@admin.register(Favorite)
-class FavoriteAdmin(admin.ModelAdmin):
-    list_display = ('id', 'clicker', 'liked')
+@admin.register(Subscription)
+class SubscriptionAdmin(admin.ModelAdmin):
+    list_display = ("id", "candidate", "employer")

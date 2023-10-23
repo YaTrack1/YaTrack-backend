@@ -1,182 +1,173 @@
 from django.db import models
-
+from django.conf import settings
 
 from user.models import User
-from vacancy.models import Skill
+from core.models import Skill
+
+# City
 
 
-class City(models.Model):
-    """Модель городов"""
+# class Candidate(User):
+#     last_visit = models.DateTimeField(
+#         "Последнее время онлайна",
+#         auto_now_add=True,
+#     )
 
-    name = models.CharField(
-        max_length=50,
-        unique=True,
-        verbose_name="Название",
-        help_text="Название города",
-    )
+#     birthday = models.DateField("День рождения")
+#     date_create = models.DateTimeField(default=settings.DATETIME_NOW)
 
-    class Meta:
-        ordering = ["name"]
-        verbose_name = "Город"
-        verbose_name_plural = "Города"
-
-    def __str__(self):
-        return self.name
-
-
-class Candidate(User):
-    last_visit = models.DateTimeField(
-        "Последнее время онлайна",
-        auto_now_add=True,
-    )
-
-    birthday = models.DateField("День рождения")
-    date_create = models.DateTimeField()
-
-    class Meta:
-        verbose_name = "Кандидат"
-        verbose_name_plural = "Кандидаты"
-        default_related_name = "candidates"
-        ordering = ("username",)
+#     class Meta:
+#         verbose_name = "Кандидат"
+#         verbose_name_plural = "Кандидаты"
+#         default_related_name = "candidates"
+#         ordering = ("username",)
 
 
 class Resume(models.Model):
     """Модель резюме."""
 
-    class GenderChoices(models.TextChoices):
-        MALE = "M", "Mуж."
-        FEMALE = "F", "Жен."
-
-    class TypeWorkChoices(models.IntegerChoices):
-        UNKNOWN = 0, "Не известно"
-        OFFICE = 1, "Оффис"
-        HYBRID = 2, "Гибрид"
-        REMOTE = 3, "Удаленка"
-
-    class StatusFinded(models.IntegerChoices):
-        UNKNOWN = 0, "Не известно"
-        SEARCH = 1, "В поиске"
-        HOLIDAY = 2, "В отпуске"
-        FOUND = 3, "Найден"
-
+    title = models.CharField("Заголовок")
     candidate = models.ForeignKey(
         User,
-        help_text="Кандидат",
-        verbose_name="Кандидат",
         on_delete=models.CASCADE,
-        related_name="resume",
+        verbose_name="Кандидат",
     )
-    # photo = models.ImageField(
-    #     "Фото",
-    #     upload_to="photo/",
-    # )
+    photo = models.ImageField(
+        "Фото",
+        upload_to="photo/",
+        default=None,
+    )
     gender = models.CharField(
         max_length=1,
-        choices=GenderChoices.choices,
+        choices=settings.GENDER_FLAG,
         verbose_name="Пол",
-        help_text="Пол кандидата",
     )
-    city = models.ForeignKey(
-        City,
-        help_text="Город кондидата",
-        verbose_name="Город",
-        on_delete=models.CASCADE,
-        related_name="candidate",
-    )
+    # city = models.ForeignKey(
+    #     City,
+    #     on_delete=models.SET_NULL,
+    #     verbose_name="Город",
+    # )
+    city = models.CharField(verbose_name="Город")
     telegram = models.CharField(
         max_length=50,
         verbose_name="Телеграм",
-        help_text="Телеграм",
     )
     github = models.CharField(
         max_length=50,
         verbose_name="GitHub",
-        help_text="GitHub",
     )
     about_me = models.TextField(
         verbose_name="О себе",
-        help_text="О себе",
     )
     birthday = models.DateField(
         verbose_name="День рождения",
-        help_text="День рождкния",
         null=True,
         blank=True,
     )
     status_type_work = models.PositiveSmallIntegerField(
-        choices=TypeWorkChoices.choices,
-        default=TypeWorkChoices.UNKNOWN,
+        choices=settings.TYPE_WORK,
+        default=settings.ZERO,
         verbose_name="Тип работы",
-        help_text="Какой устраивает тип работы кандидата",
     )
     status_finded = models.PositiveSmallIntegerField(
-        choices=StatusFinded.choices,
-        default=StatusFinded.UNKNOWN,
+        choices=settings.STATUS_FIDED,
+        default=settings.ZERO,
         verbose_name="Статус",
-        help_text="Стадия поиска работы кандидата",
     )
-    skills = models.ManyToManyField(
-        verbose_name="Навыки",
-        help_text="Навыки",
-        related_name="resumes",
-        through="ResumeSkill",
-        to=Skill,
-    )
+    # skills = models.ManyToManyField(
+    #     verbose_name="Навыки",
+    #     related_name="resumes",
+    #     to=Skill,
+    # )
 
     class Meta:
         ordering = ["candidate"]
         verbose_name = "Резюме"
         verbose_name_plural = "Резюме"
+        default_related_name = "resumes"
 
     def __str__(self):
         return f"{self.candidate}" if hasattr(self, "match") else ""
 
 
-class ResumeSkill(models.Model):
-    """Промежуточная Модель резюме и скиллов."""
-
-    resume = models.ForeignKey(
-        verbose_name="Резюме",
-        help_text="В каких резюме",
-        related_name="skill",
-        to=Resume,
-        on_delete=models.CASCADE,
-    )
+class SkillInResume(models.Model):
     skill = models.ForeignKey(
-        verbose_name="Навыки",
-        help_text="Связанный навык",
-        related_name="resume",
-        to=Skill,
-        on_delete=models.CASCADE,
+        Skill,
+        on_delete=models.SET_NULL,
+        null=True,
+        verbose_name="Скилл",
+        related_name="+",
     )
-    level = models.PositiveSmallIntegerField(
-        verbose_name="Уровень",
-        help_text="Уровень навыка",
-        default=1,  # ???
-        # validators=(
-        #     MinValueValidator(
-        #         MIN_WEIGHT_SKILL,
-        #         f'Как минимум {MIN_WEIGHT_SKILL}',
-        #     ),
-        #     MaxValueValidator(
-        #         MAX_WEIGHT_SKILL,
-        #         f'Как максимум {MAX_WEIGHT_SKILL}',
-        #     ),
-        # ),
+    resume = models.ForeignKey(
+        Resume,
+        on_delete=models.CASCADE,
+        verbose_name="Резюме",
+        related_name="skill_list",
     )
 
     class Meta:
-        verbose_name = "Навык"
-        verbose_name_plural = "Навыки"
+        ordering = ("resume",)
+        verbose_name = "Скилл в резюме"
+        verbose_name_plural = "Скиллы в резюме"
         constraints = (
             models.UniqueConstraint(
                 fields=(
-                    "resume",
                     "skill",
+                    "resume",
                 ),
-                name="unique_resume_skill",
+                name="unique_skill_resume",
             ),
         )
 
     def __str__(self):
-        return f"{self.skill}({self.resume}) - {self.level}"
+        return f"{self.skill} в {self.resume}"
+
+
+# class ResumeSkill(models.Model):
+#     """Промежуточная Модель резюме и скиллов."""
+
+#     resume = models.ForeignKey(
+#         verbose_name="Резюме",
+#         help_text="В каких резюме",
+#         related_name="skill",
+#         to=Resume,
+#         on_delete=models.CASCADE,
+#     )
+#     skill = models.ForeignKey(
+#         verbose_name="Навыки",
+#         help_text="Связанный навык",
+#         related_name="resume",
+#         to=Skill,
+#         on_delete=models.CASCADE,
+#     )
+#     level = models.PositiveSmallIntegerField(
+#         verbose_name="Уровень",
+#         help_text="Уровень навыка",
+#         default=1,  # ???
+#         # validators=(
+#         #     MinValueValidator(
+#         #         MIN_WEIGHT_SKILL,
+#         #         f'Как минимум {MIN_WEIGHT_SKILL}',
+#         #     ),
+#         #     MaxValueValidator(
+#         #         MAX_WEIGHT_SKILL,
+#         #         f'Как максимум {MAX_WEIGHT_SKILL}',
+#         #     ),
+#         # ),
+#     )
+
+#     class Meta:
+#         verbose_name = "Навык"
+#         verbose_name_plural = "Навыки"
+#         constraints = (
+#             models.UniqueConstraint(
+#                 fields=(
+#                     "resume",
+#                     "skill",
+#                 ),
+#                 name="unique_resume_skill",
+#             ),
+#         )
+
+#     def __str__(self):
+#         return f"{self.skill}({self.resume}) - {self.level}"
