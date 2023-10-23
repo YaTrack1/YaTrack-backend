@@ -55,10 +55,6 @@ class User(AbstractUser):
         ],
         help_text=(settings.LENGTH_HELP),
     )
-    is_active = models.BooleanField(
-        "Активирован",
-        default=True,
-    )
 
     class Meta:
         verbose_name = "Пользователь"
@@ -89,33 +85,35 @@ class User(AbstractUser):
         super().clean()
 
 
-class Favorite(models.Model):
-    """Подписки пользователей друг на друга."""
+class Subscription(models.Model):
+    """Модель подписки."""
 
-    clicker = models.ForeignKey(
-        verbose_name="Кто кликнул",
-        help_text="Наниматель",
-        related_name="likeds",
-        to=User,
+    candidate = models.ForeignKey(
+        User,
         on_delete=models.CASCADE,
+        related_name="subscriber",
+        verbose_name="Подписчик",
     )
-    liked = models.ForeignKey(
-        verbose_name="Подписчики",
-        help_text="Наниматель",
-        related_name="clickers",
-        to=User,
+    employer = models.ForeignKey(
+        User,
         on_delete=models.CASCADE,
+        related_name="subscription_employer",
+        verbose_name="Наниматель",
     )
 
     class Meta:
+        ordering = ["candidate"]
+        constraints = [
+            models.UniqueConstraint(
+                fields=["candidate", "employer"], name="unique_subscribe"
+            ),
+            models.CheckConstraint(
+                check=~models.Q(employer=models.F("candidate")),
+                name="check_employer",
+            ),
+        ]
         verbose_name = "Подписка"
         verbose_name_plural = "Подписки"
-        constraints = (
-            models.UniqueConstraint(
-                fields=("clicker", "liked"),
-                name="unique_clicker_liked",
-            ),
-        )
 
-    def __str__(self) -> str:
-        return f"{self.clicker.username} -> {self.liked.username}"
+    def __str__(self):
+        return f"{self.candidate} подписан на {self.employer}"
