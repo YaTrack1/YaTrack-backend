@@ -1,6 +1,11 @@
 from django.contrib import admin
 
-from vacancy.models import Skill, Vacancy, JobSkill, JobTitle
+from vacancy.models import (EmployerVacancies, EmployerOrganization,
+                            Organization, Skill, Vacancy, JobSkill, JobTitle)
+
+admin.site.register(EmployerVacancies)
+admin.site.register(Organization)
+admin.site.register(EmployerOrganization)
 
 
 @admin.register(Skill)
