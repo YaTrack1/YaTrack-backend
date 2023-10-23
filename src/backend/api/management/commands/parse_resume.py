@@ -2,14 +2,14 @@ import os
 import csv
 import logging
 
-# import pandas as pd
 from django.conf import settings
 from django.core.management import BaseCommand
 
 from api.management.logger import init_logger
 from user.models import User
-from resume.models import Resume, City
-from vacancy.models import Skill
+from resume.models import Resume
+
+# from vacancy.models import Skill
 
 init_logger("parse_resume")
 logger = logging.getLogger("parse_resume")
@@ -59,19 +59,20 @@ class Command(BaseCommand):
                 next(reader)
 
                 for row in reader:
-                    candidate = User.objects.get(username=row[0])
-                    city = City.objects.get_or_create(name=row[2])
-                    skills = Skill.objects.get_or_create(name=row[9])
+                    candidate = User.objects.get(username=row[1])
+                    # city = City.objects.get_or_create(name=row[3])
+                    # skills = Skill.objects.get_or_create(name=row[9])
                     Resume.objects.get_or_create(
+                        title=row[0],
                         candidate=candidate,
-                        gender=row[1],
-                        city=city,
-                        telegram=row[3],
-                        github=row[4],
-                        about_me=row[5],
-                        birthday=row[6],
-                        status_type_work=row[7],
-                        status_finded=row[8],
-                        skills=skills,
+                        gender=row[2],
+                        # city=city,
+                        city=row[3],
+                        telegram=row[4],
+                        github=row[5],
+                        about_me=row[6],
+                        birthday=row[7],
+                        status_type_work=row[8],
+                        status_finded=row[9],
                     )
             logger.info(settings.DATA_LOAD_IN_FILE.format(file_name))

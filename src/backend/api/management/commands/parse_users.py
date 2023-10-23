@@ -2,7 +2,6 @@ import os
 import csv
 import logging
 
-# import pandas as pd
 from django.conf import settings
 from django.core.management import BaseCommand
 

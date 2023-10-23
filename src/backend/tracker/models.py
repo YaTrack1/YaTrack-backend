@@ -19,7 +19,9 @@ class Tracker(models.Model):
 
 class ResumeInVacancy(models.Model):
     resume = models.ForeignKey(
-        Resume, on_delete=models.CASCADE, verbose_name="Резюме"
+        Resume,
+        on_delete=models.CASCADE,
+        verbose_name="Резюме",
     )
     vacancy = models.ForeignKey(
         Vacancy,
