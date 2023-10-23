@@ -4,15 +4,18 @@ from django.core.validators import MaxValueValidator, MinValueValidator
 
 class NameModel(models.Model):
     """Модель, которая имеет лишь название."""
+
     name = models.CharField(
         verbose_name="Название",
         max_length=50,
         unique=True,
+        primary_key=True,
     )
 
 
 class Skill(NameModel):
     """Модель Навыков."""
+
     class Meta:
         ordering = ["name"]
         verbose_name = "Навык"
@@ -24,6 +27,7 @@ class Skill(NameModel):
 
 class Vacancy(NameModel):
     """Модель Вакансии."""
+
     description = models.TextField(
         verbose_name="Описание",
         help_text="Описание вакансии",
@@ -56,6 +60,7 @@ class JobTitle(NameModel):
 
 class JobSkill(models.Model):
     """Промежуточная Модель Должности и скиллов."""
+
     MIN_WEIGHT_SKILL, MAX_WEIGHT_SKILL = 1, 5
     job_title = models.ForeignKey(
         verbose_name="Должность",

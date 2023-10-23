@@ -5,7 +5,7 @@ from vacancy.models import Skill, Vacancy, JobSkill, JobTitle
 
 @admin.register(Skill)
 class SkillAdmin(admin.ModelAdmin):
-    list_display = ("id", "name")
+    list_display = ("name",)
 
 
 class JobSkillInline(admin.TabularInline):
@@ -15,10 +15,10 @@ class JobSkillInline(admin.TabularInline):
 
 @admin.register(Vacancy)
 class VacancyAdmin(admin.ModelAdmin):
-    list_display = ("id", "name")
+    list_display = ("name",)
 
 
 @admin.register(JobTitle)
 class JobTitleAdmin(admin.ModelAdmin):
-    list_display = ("id", "name")
+    list_display = ("name",)
     inlines = (JobSkillInline,)

@@ -1,5 +1,5 @@
 from django.db import models
-
+from django.conf import settings
 
 from user.models import User
 from vacancy.models import Skill
@@ -11,6 +11,7 @@ class City(models.Model):
     name = models.CharField(
         max_length=50,
         unique=True,
+        primary_key=True,
         verbose_name="Название",
         help_text="Название города",
     )
@@ -31,7 +32,7 @@ class Candidate(User):
     )
 
     birthday = models.DateField("День рождения")
-    date_create = models.DateTimeField()
+    date_create = models.DateTimeField(default=settings.DATETIME_NOW)
 
     class Meta:
         verbose_name = "Кандидат"
@@ -42,22 +43,6 @@ class Candidate(User):
 
 class Resume(models.Model):
     """Модель резюме."""
-
-    class GenderChoices(models.TextChoices):
-        MALE = "M", "Mуж."
-        FEMALE = "F", "Жен."
-
-    class TypeWorkChoices(models.IntegerChoices):
-        UNKNOWN = 0, "Не известно"
-        OFFICE = 1, "Оффис"
-        HYBRID = 2, "Гибрид"
-        REMOTE = 3, "Удаленка"
-
-    class StatusFinded(models.IntegerChoices):
-        UNKNOWN = 0, "Не известно"
-        SEARCH = 1, "В поиске"
-        HOLIDAY = 2, "В отпуске"
-        FOUND = 3, "Найден"
 
     candidate = models.ForeignKey(
         User,
@@ -72,7 +57,7 @@ class Resume(models.Model):
     # )
     gender = models.CharField(
         max_length=1,
-        choices=GenderChoices.choices,
+        choices=settings.GENDER_FLAG,
         verbose_name="Пол",
         help_text="Пол кандидата",
     )
@@ -104,14 +89,14 @@ class Resume(models.Model):
         blank=True,
     )
     status_type_work = models.PositiveSmallIntegerField(
-        choices=TypeWorkChoices.choices,
-        default=TypeWorkChoices.UNKNOWN,
+        choices=settings.TYPE_WORK,
+        default=settings.ZERO,
         verbose_name="Тип работы",
         help_text="Какой устраивает тип работы кандидата",
     )
     status_finded = models.PositiveSmallIntegerField(
-        choices=StatusFinded.choices,
-        default=StatusFinded.UNKNOWN,
+        choices=settings.STATUS_FIDED,
+        default=settings.ZERO,
         verbose_name="Статус",
         help_text="Стадия поиска работы кандидата",
     )
