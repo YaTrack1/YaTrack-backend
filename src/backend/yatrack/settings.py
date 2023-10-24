@@ -156,7 +156,7 @@ REST_FRAMEWORK = {
 }
 
 DJOSER = {
-    # "LOGIN_FIELD": "email",
+    "LOGIN_FIELD": "email",
     # "SEND_ACTIVATION_EMAIL": False,
     # "HIDE_USERS": False,
     # "PERMISSIONS": {

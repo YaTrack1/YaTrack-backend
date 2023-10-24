@@ -1,5 +1,6 @@
-# from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404
 from djoser.views import UserViewSet as DjoserUserViewSet
+from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import viewsets
 
 # response, status,
@@ -21,7 +22,7 @@ from api.serializers import (
     SkillSerializer,
     TrackerSerializer,
     ComparisonSerializer,
-    FavoriteSerializer,
+    # FavoriteSerializer,
     InvitationSerializer,
     ResumeSerializer,
     ResumeReadListSerializer,
@@ -96,12 +97,36 @@ class ComparisonViewset(viewsets.ModelViewSet):
     # filterset_class =
 
 
-class FavoriteViewset(viewsets.ModelViewSet):
+# class FavoriteViewset(viewsets.ModelViewSet):
+#     queryset = Favorite.objects.all()
+#     serializer_class = FavoriteSerializer
+#     # permission_classes =
+#     pagination_class = LimitPageNumberPagination
+#     # filterset_class =
+
+
+class FavoriteViewset(viewsets.ReadOnlyModelViewSet):
+    """Viewset-класс для получение избранных."""
+
     queryset = Favorite.objects.all()
-    serializer_class = FavoriteSerializer
-    # permission_classes =
+    serializer_class = ResumeSerializer
+    # permission_classes = должен быть только автор
+    filter_backends = (DjangoFilterBackend,)
     pagination_class = LimitPageNumberPagination
-    # filterset_class =
+    # filterset_fields = ('gender',)  # gender для проверки filter
+
+    def get_queryset(self):
+        # if self.request.user.is_anonymous:
+        #     # !!!!!!!!!!!!!!!!!! Возможно ли? какое действие? !!!!!!!!!!!!!
+        #     return
+        vacancy = get_object_or_404(Vacancy, id=self.kwargs.get("vacancy_id"))
+        # if (self.request.user.id == vacancy.author):  # permission
+        #     return
+        ids = Favorite.objects.filter(vacancy_id=vacancy.id).values_list(
+            "resume_id", flat=True
+        )
+        resumes = Resume.objects.filter(id__in=ids)
+        return resumes
 
 
 class InvitationViewset(viewsets.ModelViewSet):

@@ -195,3 +195,14 @@ class InvitationSerializer(serializers.ModelSerializer):
             "resume",
             "vacancy",
         )
+
+
+class ResumeSerializers(serializers.ModelSerializer):
+    class Meta:
+        model = Resume
+        fields = (
+            "id",
+            "title",
+            "candidate",
+            "gender",
+        )
