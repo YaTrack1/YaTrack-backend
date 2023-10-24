@@ -87,7 +87,7 @@ class Resume(models.Model):
         default_related_name = "resumes"
 
     def __str__(self):
-        return f"{self.candidate}" if hasattr(self, "match") else ""
+        return f"{self.candidate}" if hasattr(self, "candidate") else ""
 
 
 class SkillInResume(models.Model):

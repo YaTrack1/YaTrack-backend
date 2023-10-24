@@ -1,5 +1,6 @@
 from rest_framework import serializers
 
+from resume.models import Resume
 from user.models import User
 
 
@@ -24,4 +25,15 @@ class CandidateSerializers(serializers.ModelSerializer):
             "email",
             "first_name",
             "last_name",
+        )
+
+
+class ResumeSerializers(serializers.ModelSerializer):
+    class Meta:
+        model = Resume
+        fields = (
+            "id",
+            "title",
+            "candidate",
+            "gender",
         )

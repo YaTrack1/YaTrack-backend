@@ -4,6 +4,7 @@ import logging
 
 from django.conf import settings
 from django.core.management import BaseCommand
+from django.contrib.auth.hashers import make_password
 
 from api.management.logger import init_logger
 from user.models import User
@@ -57,7 +58,7 @@ class Command(BaseCommand):
                 for row in reader:
                     User.objects.get_or_create(
                         username=row[0],
-                        password=row[1],
+                        password=make_password(row[1]),
                         email=row[2],
                         first_name=row[3],
                         last_name=row[4],
