@@ -59,3 +59,4 @@ tzdata==2023.3
 uritemplate==4.1.1
 urllib3==2.0.6
 virtualenv==20.24.5
+drf-extra-fields==3.7.0
