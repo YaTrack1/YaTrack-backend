@@ -27,11 +27,13 @@ class CandidateSerializers(serializers.ModelSerializer):
             "last_name",
         )
 
+
 class ResumeSerializers(serializers.ModelSerializer):
     class Meta:
         model = Resume
         fields = (
             "id",
             "title",
-            "candidate"
+            "candidate",
+            "gender",
         )

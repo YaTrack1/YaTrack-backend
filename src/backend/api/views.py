@@ -1,4 +1,5 @@
 from djoser.views import UserViewSet as DjoserUserViewSet
+from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.viewsets import ReadOnlyModelViewSet
 from django.shortcuts import get_object_or_404
 
@@ -19,14 +20,14 @@ class EmployerViewset(DjoserUserViewSet):
 class FavoriteViewset(ReadOnlyModelViewSet):
     """Viewset-класс для получение избранных."""
     serializer_class = ResumeSerializers
+    filter_backends = (DjangoFilterBackend,)
+    # filterset_fields = ('gender',)  # gender для проверки filter
     # pagination_class = LimitPageNumberPagination
-    #permission_classes = должен быть только автор
+    # permission_classes = должен быть только автор
 
     def get_queryset(self):
-        print(self.request.user)
-        print(self.request.user.id)
         # if self.request.user.is_anonymous:
-        #     # !!!!!!!!!!!!!!!!!! Возможно ли? какое действие? !!!!!!!!!!!!!!!!
+        #     # !!!!!!!!!!!!!!!!!! Возможно ли? какое действие? !!!!!!!!!!!!!
         #     return
         vacancy = get_object_or_404(
             Vacancy,
@@ -37,7 +38,5 @@ class FavoriteViewset(ReadOnlyModelViewSet):
         ids = (Favorite.objects
                .filter(vacancy_id=vacancy.id)
                .values_list('resume_id', flat=True))
-        print(vacancy.id, ids)
         resumes = Resume.objects.filter(id__in=ids)
-        print(resumes)
         return resumes
