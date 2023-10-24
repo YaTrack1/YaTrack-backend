@@ -34,10 +34,10 @@ class FavoriteViewset(ReadOnlyModelViewSet):
         )
         # if (self.request.user.id == vacancy.author):  # permission
         #     return
-        ids = Favorite.objects.filter(vacancy_id=vacancy.id)
-        print(ids)
-        ids = ids.values_list('vacancy_id', flat=True)
-        print(ids)
-        resumes = Resume.objects.filter(candidate__id__in=ids)
+        ids = (Favorite.objects
+               .filter(vacancy_id=vacancy.id)
+               .values_list('resume_id', flat=True))
+        print(vacancy.id, ids)
+        resumes = Resume.objects.filter(id__in=ids)
         print(resumes)
         return resumes

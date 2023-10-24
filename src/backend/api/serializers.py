@@ -33,4 +33,5 @@ class ResumeSerializers(serializers.ModelSerializer):
         fields = (
             "id",
             "title",
+            "candidate"
         )
