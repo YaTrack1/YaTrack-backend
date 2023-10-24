@@ -1,10 +1,10 @@
 from django.urls import include, re_path
 from rest_framework.routers import DefaultRouter
 
-from api.views import EmployerViewset
+from api.views import EmployerViewset, FavoriteViewset
 
 # ResumeViewset, ComparisonViewset, VacancyViewset,
-# TrackerViewset, FavoriteViewset, InvitationViewset,
+# TrackerViewset, InvitationViewset,
 
 app_name = "api"
 
@@ -24,11 +24,11 @@ router.register("employer", EmployerViewset, basename="employer")
 #     ComparisonViewset,
 #     basename="comparison"
 # )
-# router.register(
-#     r"tracker/(?P<vacancy_id>\d+)/favorite",
-#     FavoriteViewset,
-#     basename="favorite"
-# )
+router.register(
+    r"tracker/(?P<vacancy_id>\d+)/favorite",
+    FavoriteViewset,
+    basename="favorite"
+)
 # router.register(
 #     r"tracker/(?P<vacancy_id>\d+)/invitation",
 #     InvitationViewset,
