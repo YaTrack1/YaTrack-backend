@@ -3,6 +3,11 @@ from django.contrib import admin
 from vacancy.models import Vacancy, SkillInVacancy
 
 
+class SkillInVacancyInline(admin.StackedInline):
+    model = SkillInVacancy
+    extra = 0
+
+
 @admin.register(Vacancy)
 class VacancyAdmin(admin.ModelAdmin):
     list_display = (
@@ -21,6 +26,7 @@ class VacancyAdmin(admin.ModelAdmin):
         "city",
     )
     empty_value_display = "--пусто--"
+    inlines = (SkillInVacancyInline,)
 
 
 @admin.register(SkillInVacancy)
