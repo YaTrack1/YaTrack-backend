@@ -1,17 +1,36 @@
-import logging
-
 from rest_framework import permissions
 
-logger = logging.getLogger(__name__)
+from vacancy.models import Vacancy
 
 
-class IsAuthor(permissions.BasePermission):
-    def has_object_permission(self, request, view, obj):
-        return (request.user == obj.user)
+class IsEmployerSelfVacancy(permissions.BasePermission):
+    """Права нанимателя входить в свои вакансии."""
+
+    def has_permission(self, request, view):
+        user = request.user
+        if not user.is_authenticated:
+            return False
+        vacancy_id = request.parser_context['kwargs'].get('vacancy_id')
+        if not vacancy_id:
+            return False
+        vacancy = Vacancy.objects.get(id=vacancy_id)
+        return vacancy.author_id == user.id
+
+# class IsEmployer(permissions.BasePermission):
+#     """Доступ только нанимателю."""
+
+#     def has_object_permission(self, request, view, obj):
+#         return (
+#             request.method in permissions.SAFE_METHODS
+#             or obj.user == request.employer
+#         )
 
 
-class IsAuthorOrReadOnly(permissions.BasePermission):
-    def has_object_permission(self, request, view, obj):
-        if request.method in permissions.SAFE_METHODS:
-            return True
-        return (request.user == obj.user)
+# class IsCandidate(permissions.BasePermission):
+#     """Доступ только кандидату."""
+
+#     def has_object_permission(self, request, view, obj):
+#         return (
+#             request.method in permissions.SAFE_METHODS
+#             or obj.user == request.candidate
+#         )
