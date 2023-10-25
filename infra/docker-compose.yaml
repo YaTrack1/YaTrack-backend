@@ -13,7 +13,7 @@ services:
   backend:
     # image: yatrack:latest
     build:
-      context: ../backend
+      context: ../src/backend
       dockerfile: Dockerfile
     restart: always
     ports:
