@@ -50,5 +50,5 @@ class Organization(NameModel):
 
     class Meta:
         ordering = ("name",)
-        verbose_name = "Навык"
-        verbose_name_plural = "Навыки"
+        verbose_name = "Организация"
+        verbose_name_plural = "Организации"
