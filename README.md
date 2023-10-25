@@ -37,15 +37,13 @@
 
 ```sh
 auth/users/  # регистрация пользователя
-
 auth/token/login/  # вход из системы
 auth/token/logout/  # выход в систему
 
 api/employer/  # Профиль нанимателя(HR)
-
-api/vacancy/  # Описание вакансии
-api/vacancy/create/step-1/
-api/vacancy/create/step-2/
+api/employer/vacancy/  # Описание вакансии
+api/employer/create/step-1/ # Первый шаг создания вакансии
+api/employer/create/step-2/ # Второй шаг создания вакансии
 
 api/resume/  # Резюме кандидата
 

@@ -1,6 +1,6 @@
 from django.db.transaction import atomic
 from drf_extra_fields.fields import Base64ImageField
-from rest_framework import serializers
+from rest_framework import serializers, relations
 
 from user.models import User
 from core.models import Organization, City, Skill
@@ -22,7 +22,25 @@ class CandidateSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = "__all__"
+        fields = (
+            "first_name",
+            "last_name",
+            "email",
+            "last_login",
+            "is_active",
+        )
+
+
+class CandidateInTrackerSerializer(serializers.ModelSerializer):
+    """Сериализатор модели пользователя как <Кандидат> для трекекра."""
+
+    class Meta:
+        model = User
+        fields = (
+            "first_name",
+            "last_name",
+            "last_login",
+        )
 
 
 class OrganizationSerializer(serializers.ModelSerializer):
@@ -86,8 +104,8 @@ class ResumeSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
 
-class ResumeReadListSerializer(serializers.ModelSerializer):
-    candidate = CandidateSerializer(read_only=True)
+class ResumeInTrackerSerializer(serializers.ModelSerializer):
+    candidate = CandidateInTrackerSerializer(read_only=True)
     photo = Base64ImageField(read_only=True)
     grade = serializers.CharField()
     skill_list = SkillInResumeSerializer(many=True, read_only=True)
@@ -101,11 +119,52 @@ class ResumeCreateSerializer(serializers.ModelSerializer):
     candidate = CandidateSerializer(read_only=True)
     photo = Base64ImageField(max_length=None, use_url=True)
     city = CitySerializer(read_only=True)
-    skill_list = SkillInResumeSerializer(many=True, read_only=True)
+    skill_list = relations.PrimaryKeyRelatedField(
+        queryset=Skill.objects.all(), many=True
+    )
 
     class Meta:
         model = Resume
-        fields = "__all__"
+        fields = (
+            "title",
+            "candidate",
+            "photo",
+            "birthday",
+            "city",
+            "skill_list",
+            "gender",
+            "telegram",
+            "github",
+            "about_me",
+            "status_type_work",
+            "status_finded",
+        )
+        read_only_fields = ("author",)
+
+    @atomic
+    def creating_skills(self, resume, skills_data):
+        for skill in skills_data:
+            SkillInResume.objects.get_or_create(
+                resume=resume,
+                skill=skill["id"],
+            )
+
+    @atomic
+    def create(self, validated_data):
+        skills_data = validated_data.pop("skills")
+        candidate = self.context.get("request").user
+        resume = Resume.objects.create(candidate=candidate, **validated_data)
+        self.creating_skills(resume, skills_data)
+
+        return resume
+
+    @atomic
+    def update(self, instance, validated_data):
+        skills_data = validated_data.pop("skills")
+        SkillInResume.objects.filter(resume=instance).delete()
+        self.creating_skills(instance, skills_data)
+
+        return super().update(instance, validated_data)
 
 
 class SkillInVacancySerializer(serializers.ModelSerializer):
@@ -137,32 +196,67 @@ class VacancyReadListSerializer(serializers.ModelSerializer):
 
 
 class VacancyCreateSerializer(serializers.ModelSerializer):
-    skill_list = SkillInVacancySerializer(many=True, read_only=True)
+    author = EmployerSerializer(read_only=True)
+    city = CitySerializer(read_only=True)
+    skill_list = relations.PrimaryKeyRelatedField(
+        queryset=Skill.objects.all(), many=True
+    )
 
     class Meta:
         model = Vacancy
-        fields = "__all__"
+        fields = (
+            "position",
+            "author",
+            "specialty",
+            "description",
+            "duties",
+            "city",
+            "conditions",
+            "stages",
+            "skill_list",
+        )
+        read_only_fields = ("author",)
 
     @atomic
-    def creating_ingredients(self, recipe, ingredients_data):
-        for ingredient in ingredients_data:
+    def creating_skills(self, vacancy, skills_data):
+        for skill in skills_data:
             SkillInVacancy.objects.get_or_create(
-                recipe=recipe,
-                ingredient=ingredient["id"],
-                amount=ingredient["amount"],
+                vacancy=vacancy,
+                skill=skill["id"],
             )
+
+    @atomic
+    def create(self, validated_data):
+        skills_data = validated_data.pop("skills")
+        author = self.context.get("request").user
+        vacancy = Vacancy.objects.create(author=author, **validated_data)
+        self.creating_skills(vacancy, skills_data)
+
+        return vacancy
+
+    @atomic
+    def update(self, instance, validated_data):
+        skills_data = validated_data.pop("skills")
+        SkillInVacancy.objects.filter(vacancy=instance).delete()
+        self.creating_skills(instance, skills_data)
+
+        return super().update(instance, validated_data)
 
 
 class TrackerSerializer(serializers.ModelSerializer):
-    resume = ResumeSerializer()
+    """Сериализатор модели всех резюме кандидатов."""
+
+    resume = ResumeInTrackerSerializer()
 
     class Meta:
         model = Tracker
-        fields = "__all__"
+        fields = ("resume",)
 
 
 class ComparisonSerializer(serializers.ModelSerializer):
-    resume = ResumeReadListSerializer()
+    """Сериализатор модели подходящих кандидатов."""
+
+    resume = ResumeInTrackerSerializer()
     # vacancy = VacancySerializer()
 
     class Meta:
@@ -174,7 +268,9 @@ class ComparisonSerializer(serializers.ModelSerializer):
 
 
 class FavoriteSerializer(serializers.ModelSerializer):
-    # resume = ResumeSerializer()
+    """Сериализатор модели избранных кандидатов."""
+
+    resume = ResumeInTrackerSerializer()
     # vacancy = VacancySerializer()
 
     class Meta:
@@ -186,7 +282,9 @@ class FavoriteSerializer(serializers.ModelSerializer):
 
 
 class InvitationSerializer(serializers.ModelSerializer):
-    resume = ResumeSerializer()
+    """Сериализатор модели приглашенных кандидатов."""
+
+    resume = ResumeInTrackerSerializer()
     # vacancy = VacancySerializer()
 
     class Meta:
@@ -197,12 +295,12 @@ class InvitationSerializer(serializers.ModelSerializer):
         )
 
 
-class ResumeSerializers(serializers.ModelSerializer):
-    class Meta:
-        model = Resume
-        fields = (
-            "id",
-            "title",
-            "candidate",
-            "gender",
-        )
+# class ResumeSerializers(serializers.ModelSerializer):
+#     class Meta:
+#         model = Resume
+#         fields = (
+#             "id",
+#             "title",
+#             "candidate",
+#             "gender",
+#         )
