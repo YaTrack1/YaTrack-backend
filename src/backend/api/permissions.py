@@ -16,7 +16,6 @@ class IsEmployerSelfVacancy(permissions.BasePermission):
         vacancy = Vacancy.objects.get(id=vacancy_id)
         return vacancy.author_id == user.id
 
-
 # class IsEmployer(permissions.BasePermission):
 #     """Доступ только нанимателю."""
 
