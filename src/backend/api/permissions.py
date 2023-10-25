@@ -1,21 +1,17 @@
-# from rest_framework import permissions
+import logging
+
+from rest_framework import permissions
+
+logger = logging.getLogger(__name__)
 
 
-# class IsEmployer(permissions.BasePermission):
-#     """Доступ только нанимателю."""
-
-#     def has_object_permission(self, request, view, obj):
-#         return (
-#             request.method in permissions.SAFE_METHODS
-#             or obj.user == request.employer
-#         )
+class IsAuthor(permissions.BasePermission):
+    def has_object_permission(self, request, view, obj):
+        return (request.user == obj.user)
 
 
-# class IsCandidate(permissions.BasePermission):
-#     """Доступ только кандидату."""
-
-#     def has_object_permission(self, request, view, obj):
-#         return (
-#             request.method in permissions.SAFE_METHODS
-#             or obj.user == request.candidate
-#         )
+class IsAuthorOrReadOnly(permissions.BasePermission):
+    def has_object_permission(self, request, view, obj):
+        if request.method in permissions.SAFE_METHODS:
+            return True
+        return (request.user == obj.user)
