@@ -74,10 +74,10 @@ jobs:
     runs-on: ubuntu-latest
     needs:
     - build_and_push_to_docker_hub
-    if: github.ref == 'refs/heads/master'
+    if: github.ref == 'refs/heads/develop'
     steps:
       - name: executing remote ssh commands to deploy
-        uses: appleboy/ssh-action@master
+        uses: appleboy/ssh-action@develop
         with:
           host: ${{ secrets.HOST }}
           username: ${{ secrets.USER }}
