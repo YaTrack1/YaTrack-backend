@@ -1,6 +1,6 @@
 # YaTrack
 
-![yatrack_workflow](https://github.com/YaTrack1/YaTrack-backend/actions/workflows/main-push.yml/badge.svg)
+![YaTrack Workflow](https://github.com/YaTrack1/YaTrack-backend/actions/workflows/main-push_workflow.yml/badge.svg)
 
 ## Описание проекта
 ### Внутренний сервис найма студентов.
@@ -15,16 +15,16 @@
 
 <details><summary><h2>Структура проекта</h2></summary>
     <details><summary><h4>Структура базы данных</h4></summary>
-        <img src="https://github.com/YaTrack1/YaTrack-backend/blob/develop/docs/BD_YaTrack.jpg"/>
+        <img src="/docs/BD_YaTrack.jpg"/>
     </details>
     <details><summary><h4>Структура репозитория</h4></summary>
-        <img src="https://github.com/YaTrack1/YaTrack-backend/blob/main/docs/rep_YaTrack.jpg"/>
+        <img src="/docs/rep_YaTrack.jpg"/>
     </details>
     <details><summary><h4>Специфика ендпойнтов в Swagger</h4></summary>
-        <img src="https://github.com/YaTrack1/YaTrack-backend/blob/main/docs/sw_YaTrack.jpg"/>
+        <img src="/docs/sw_YaTrack.jpg"/>
     </details>
     <details><summary><h4>Документация Redoc</h4></summary>
-        <img src="https://github.com/YaTrack1/YaTrack-backend/blob/main/docs/doc_YaTrack.jpg"/>
+        <img src="/docs/doc_YaTrack.jpg"/>
     </details>
 </details>
 
