@@ -5,8 +5,8 @@ from api.views import (
     EmployerViewset,
     TrackerViewset,
     ComparisonViewset,
-    FavoriteViewset,
-    InvitationViewset,
+    # FavoriteViewset,
+    # InvitationViewset,
     VacancyViewset,
     ResumeViewset,
 )
@@ -28,20 +28,25 @@ router.register("resume", ResumeViewset, basename="resume")
 
 router.register("tracker", TrackerViewset, basename="tracker")
 router.register(
-    r"tracker/(?P<vacancy_id>\d+)/comparison",
+    "tracker",
     ComparisonViewset,
     basename="comparison",
 )
-router.register(
-    r"tracker/(?P<vacancy_id>\d+)/favorite",
-    FavoriteViewset,
-    basename="favorite",
-)
-router.register(
-    r"tracker/(?P<vacancy_id>\d+)/invitation",
-    InvitationViewset,
-    basename="invitation",
-)
+# router.register(
+#     r"tracker/(?P<vacancy_id>\d+)/comparison",
+#     ComparisonViewset,
+#     basename="comparison",
+# )
+# router.register(
+#     r"tracker/(?P<vacancy_id>\d+)/favorite",
+#     FavoriteViewset,
+#     basename="favorite",
+# )
+# router.register(
+#     r"tracker/(?P<vacancy_id>\d+)/invitation",
+#     InvitationViewset,
+#     basename="invitation",
+# )
 
 urlpatterns = [
     re_path(r"^", include(router.urls)),
