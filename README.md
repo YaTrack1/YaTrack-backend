@@ -115,7 +115,7 @@ api/tracker/<vacancy_id>/invitation/  # Приглашенные кандида�
 
 5. *Установите pre-commit*:
    ```sh
-   pip install pre-commit
+   pre-commit install
    ```
 </details>
 
