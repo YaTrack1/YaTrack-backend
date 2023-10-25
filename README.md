@@ -1,6 +1,6 @@
 # YaTrack
 
-![yatrack_workflow](https://github.com/YaTrack1/YaTrack-backend/actions/workflows/yatrack_workflow.yml/badge.svg)
+![yatrack_workflow](https://github.com/YaTrack1/YaTrack-backend/actions/workflows/main-push.yml/badge.svg)
 
 ## Описание проекта
 ### Внутренний сервис найма студентов.
@@ -15,7 +15,7 @@
 
 <details><summary><h2>Структура проекта</h2></summary>
     <details><summary><h4>Структура базы данных</h4></summary>
-        <img src="https://github.com/YaTrack1/YaTrack-backend/blob/main/docs/BD_YaTrack.jpg"/>
+        <img src="https://github.com/YaTrack1/YaTrack-backend/blob/develop/docs/BD_YaTrack.jpg"/>
     </details>
     <details><summary><h4>Структура репозитория</h4></summary>
         <img src="https://github.com/YaTrack1/YaTrack-backend/blob/main/docs/rep_YaTrack.jpg"/>
@@ -115,7 +115,7 @@ api/tracker/<vacancy_id>/invitation/  # Приглашенные кандида�
 
 5. *Установите pre-commit*:
    ```sh
-   install pre-commit
+   pre-commit install
    ```
 </details>
 
