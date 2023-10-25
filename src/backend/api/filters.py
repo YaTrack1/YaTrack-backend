@@ -1,53 +1,74 @@
-import logging
-
 import django_filters
 
-from recipes.models import Cart, Favorite, Recipe, Tag
-from users.models import CustomUser
-
-logger = logging.getLogger(__name__)
-
-
-BOOLEAN_CHOICES = ((1, True), (0, False))
+from resume.models import Resume
+from user.models import Subscription, User
+from vacancy.models import Vacancy
+from tracker.models import Favorite
 
 
-class IngredientFilter(django_filters.FilterSet):
-    name = django_filters.CharFilter(lookup_expr='istartswith')
-
-
-class RecipeFilter(django_filters.FilterSet):
-    tags = django_filters.ModelMultipleChoiceFilter(
-        field_name='tags__slug',
-        to_field_name='slug',
-        queryset=Tag.objects.all())
-    author = django_filters.ModelChoiceFilter(
-        field_name='user',
-        queryset=CustomUser.objects.all(),)
-    is_favorited = django_filters.NumberFilter(
-        field_name='is_favorited',
-        method='get_is_favorited',
+class SelectionResumesFilter(django_filters.FilterSet):
+    """Фильтр для выбора резюме."""
+    actived = django_filters.BooleanFilter(
+        field_name='candidate__is_active',
     )
-    is_in_shopping_cart = django_filters.NumberFilter(
-        method='get_is_in_shopping_cart',)
+    # /?actived=true
+    is_favorite_from = django_filters.BooleanFilter(
+        field_name='candidate',
+        method='get_is_favorite_from_candidate',
+    )
+    # /api/tracker/3/favorite/?is_favorite_from=true
+    is_favorite = django_filters.BooleanFilter(
+        field_name='vacancy',
+        method='get_is_favorite_candidate',
+    )
+    # /api/tracker/3/favorite/?is_favorite=true
+    email = django_filters.CharFilter(lookup_expr='contains')
+    city = django_filters.CharFilter(lookup_expr='contains')
+    about_me = django_filters.CharFilter(lookup_expr='contains')
+    birthday__gte = django_filters.NumberFilter(
+        field_name='birthday',
+        lookup_expr='year__gte',
+    )
+    # /?birthday__gte=1992  - больше и равно дня рождения
+    birthday__lte = django_filters.NumberFilter(
+        field_name='birthday',
+        lookup_expr='year__lte',
+    )
+    candidate = django_filters.CharFilter(
+        field_name='candidate__username',
+        lookup_expr='contains',
+    )
 
-    def get_is_favorited(self, queryset, name, value):
+    def get_is_favorite_from_candidate(self, queryset, name, value):
         user = self.request.user
         if user.is_anonymous:
             return queryset
-        if not value:
-            return queryset
-        favorites = Favorite.objects.filter(user=user)
-        return queryset.filter(favorites__in=favorites)
+        candidate_ids = Subscription.objects.filter(
+            employer_id=user.id).values_list('candidate_id', flat=True)
+        candidate_ids = User.objects.filter(
+            id__in=candidate_ids).values_list('id', flat=True)
+        resumes = Resume.objects.filter(candidate_id__in=candidate_ids)
+        return resumes
 
-    def get_is_in_shopping_cart(self, queryset, name, value):
-        user = self.request.user
+    def get_is_favorite_candidate(self, queryset, name, value):
+        request = self.request
+        user = request.user
         if user.is_anonymous:
             return queryset
-        if not value:
+        vacancy_id = request.parser_context['kwargs'].get('vacancy_id')
+        if not vacancy_id:
             return queryset
-        cart = Cart.objects.filter(user=user)
-        return queryset.filter(cart__in=cart)
+        vacancies = Vacancy.objects.filter(id=vacancy_id)
+        if not vacancies.count():
+            return queryset
+        vacancy = vacancies.first()
+        ids = Favorite.objects.filter(vacancy_id=vacancy.id).values_list(
+            "resume_id", flat=True
+        )
+        resumes = Resume.objects.filter(id__in=ids)
+        return resumes
 
     class Meta:
-        model = Recipe
-        fields = ('tags', 'author', 'is_favorited', 'is_in_shopping_cart')
+        model = Resume
+        fields = []
+        # fields = ('email', 'city', 'birthday', )
