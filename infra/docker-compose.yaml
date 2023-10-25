@@ -11,9 +11,9 @@ services:
       - ./.env
 
   backend:
-    # image: yatrack:latest
+    # image: yatrack-back:latest
     build:
-      context: ../backend
+      context: ../src/backend
       dockerfile: Dockerfile
     restart: always
     ports:

@@ -36,13 +36,13 @@
 
     http://127.0.0.1:8000/
 
-**Адрес админки проекта**
+*(запуск на сервере)*
 
-    http://127.0.0.1:8000/admin/
+    https://51.250.74.42:8000/
 
-**Документация**
+> /admin/ # Адрес админки проекта
 
-    http://127.0.0.1:8000/swagger/
+> /swagger/ # Документация
 
 **Handlers**
 
@@ -128,9 +128,13 @@ api/tracker/<vacancy_id>/invitation/  # Приглашенные кандида�
     ```sh
     docker compose -f infra/docker-compose.yaml up -d --build
     ```
-2. *Для остановки контейнера*:
+2. *Для остановки контейнеров*:
     ```sh
-    docker compose -f infra/docker-compose.yaml down
+    docker compose -f infra/docker-compose.yaml stop
+    ```
+3. *Для удаления контейнеров*:
+    ```sh
+    docker compose -f infra/docker-compose.yaml down (-v опционально, удалит связи)
     ```
 </details>
 
