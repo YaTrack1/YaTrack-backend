@@ -30,9 +30,15 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.getenv("SECRET_KEY", default=get_random_secret_key())
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
-ALLOWED_HOSTS = ["127.0.0.1", "localhost", "yatrack", "51.250.74.42"]
+ALLOWED_HOSTS = [
+    "127.0.0.1",
+    "localhost",
+    "yatrack",
+    "51.250.74.42",
+    "178.178.89.175",
+]
 
 
 # Application definition
@@ -95,10 +101,10 @@ DATABASES = {
         "ENGINE": os.getenv(
             "DB_ENGINE", default="django.db.backends.postgresql"
         ),
-        "NAME": os.getenv("DB_NAME", default="postgres"),
+        "NAME": os.getenv("DB_NAME", default="ytrack"),
         "USER": os.getenv("PG_USER", default="postgres"),
         "PASSWORD": os.getenv("PG_PASSWORD", default="postgres"),
-        "HOST": os.getenv("DB_HOST", default="db"),
+        "HOST": os.getenv("DB_HOST", default="localhost"),
         "PORT": os.getenv("DB_PORT", default="5432"),
     }
 }
