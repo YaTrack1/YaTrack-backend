@@ -94,16 +94,16 @@ jobs:
             sudo rm -f .env
             sudo touch .env
 
-            echo DB_ENGINE=${{ secrets.DB_ENGINE }} >> .env
-            echo DB_NAME=${{ secrets.DB_NAME }} >> .env
-            echo POSTGRES_USER=${{ secrets.PG_USER }} >> .env
-            echo POSTGRES_PASSWORD=${{ secrets.PG_PASSWORD }} >> .env
-            echo DB_HOST=${{ secrets.DB_HOST }} >> .env
-            echo DB_PORT=${{ secrets.DB_PORT }} >> .env
+            sudo echo DB_ENGINE=${{ secrets.DB_ENGINE }} >> .env
+            sudo echo DB_NAME=${{ secrets.DB_NAME }} >> .env
+            sudo echo POSTGRES_USER=${{ secrets.PG_USER }} >> .env
+            sudo echo POSTGRES_PASSWORD=${{ secrets.PG_PASSWORD }} >> .env
+            sudo echo DB_HOST=${{ secrets.DB_HOST }} >> .env
+            sudo echo DB_PORT=${{ secrets.DB_PORT }} >> .env
 
             sudo docker-compose stop
-            sudo docker ps -a | grep Exit | cut -d ' ' -f 1 | xargs sudo docker rm
-            sudo docker rmi ${{ secrets.DOCKER_USERNAME }}/yatrack-back
-            sudo docker compose pull ${{ secrets.DOCKER_USERNAME }}/yatrack-back
-            sudo docker compose up -d
-            sudo docker image prune -a
+
+            sudo docker-compose rm yatrack-front
+            sudo docker-compose pull yatrack-front
+
+            sudo docker-compose up -d --build
