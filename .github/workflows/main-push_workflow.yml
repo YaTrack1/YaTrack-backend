@@ -91,7 +91,6 @@ jobs:
           passphrase: ${{ secrets.PASSPHRASE }}
           script: |
             cd ${{ secrets.PROJECT_FOLDER }}
-
             sudo rm -f .env
             sudo touch .env
 
