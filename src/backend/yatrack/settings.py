@@ -30,15 +30,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.getenv("SECRET_KEY", default=get_random_secret_key())
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = [
-    "127.0.0.1",
-    "localhost",
-    "yatrack",
-    "51.250.74.42",
-    "178.178.89.175",
-]
+ALLOWED_HOSTS = ["*"]
 
 
 # Application definition
