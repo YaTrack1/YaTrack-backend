@@ -2,7 +2,7 @@ from django.db import models
 
 
 class NameModel(models.Model):
-    """Модель, которая имеет лишь название."""
+    """Абстрактная модель названия."""
 
     name = models.CharField(
         verbose_name="Название",
@@ -36,19 +36,19 @@ class Skill(NameModel):
         verbose_name_plural = "Навыки"
 
 
-class Organization(NameModel):
-    """Модель организации нанимателей."""
+# class Organization(NameModel):
+#     """Модель организации нанимателей."""
 
-    itn = models.CharField(
-        max_length=50,
-        unique=True,
-        null=False,
-        blank=True,
-        verbose_name="ИНН",
-        help_text="Идентификационный номер налогоплательщика",
-    )
+#     itn = models.CharField(
+#         max_length=50,
+#         unique=True,
+#         null=False,
+#         blank=True,
+#         verbose_name="ИНН",
+#         help_text="Идентификационный номер налогоплательщика",
+#     )
 
-    class Meta:
-        ordering = ("name",)
-        verbose_name = "Организация"
-        verbose_name_plural = "Организации"
+#     class Meta:
+#         ordering = ("name",)
+#         verbose_name = "Организация"
+#         verbose_name_plural = "Организации"

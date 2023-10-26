@@ -1,8 +1,8 @@
 from django.contrib import admin
 
-from core.models import City, Organization, Skill
+from core.models import City, Skill
 
-admin.site.register(Organization)
+# admin.site.register(Organization)
 admin.site.register(City)
 admin.site.register(Skill)
 

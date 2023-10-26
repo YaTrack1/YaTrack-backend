@@ -5,6 +5,8 @@ from resume.models import Resume
 
 
 class Tracker(models.Model):
+    """Модель трекера всех резюме."""
+
     resume = models.ForeignKey(
         Resume, on_delete=models.CASCADE, verbose_name="Резюме"
     )
@@ -18,6 +20,8 @@ class Tracker(models.Model):
 
 
 class ResumeInVacancy(models.Model):
+    """Абстрактная модель резюме в вакансии."""
+
     resume = models.ForeignKey(
         Resume,
         on_delete=models.CASCADE,
@@ -38,6 +42,8 @@ class ResumeInVacancy(models.Model):
 
 
 class Comparison(ResumeInVacancy):
+    """Модель подходящих кандидатов по резюме."""
+
     class Meta:
         verbose_name = "Сравнение подходящих вакансий"
         verbose_name_plural = "Сравнения подходящих вакансий"
@@ -54,6 +60,8 @@ class Comparison(ResumeInVacancy):
 
 
 class Favorite(ResumeInVacancy):
+    """Модель избранных кандидатов по резюме."""
+
     class Meta:
         verbose_name = "Избранный"
         verbose_name_plural = "Избранные"
@@ -70,6 +78,8 @@ class Favorite(ResumeInVacancy):
 
 
 class Invitation(ResumeInVacancy):
+    """Модель приглашенных кандидатов по резюме."""
+
     class Meta:
         verbose_name = "Приглашенный"
         verbose_name_plural = "Приглашенные"

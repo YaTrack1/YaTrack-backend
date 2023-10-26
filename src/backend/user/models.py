@@ -83,37 +83,3 @@ class User(AbstractUser):
         self.first_name = self.__normalize_human_names(self.first_name)
         self.last_name = self.__normalize_human_names(self.last_name)
         super().clean()
-
-
-class Subscription(models.Model):
-    """Модель подписки."""
-
-    candidate = models.ForeignKey(
-        User,
-        on_delete=models.CASCADE,
-        related_name="subscriber",
-        verbose_name="Подписчик",
-    )
-    employer = models.ForeignKey(
-        User,
-        on_delete=models.CASCADE,
-        related_name="subscription_employer",
-        verbose_name="Наниматель",
-    )
-
-    class Meta:
-        ordering = ["candidate"]
-        constraints = [
-            models.UniqueConstraint(
-                fields=["candidate", "employer"], name="unique_subscribe"
-            ),
-            models.CheckConstraint(
-                check=~models.Q(employer=models.F("candidate")),
-                name="check_employer",
-            ),
-        ]
-        verbose_name = "Подписка"
-        verbose_name_plural = "Подписки"
-
-    def __str__(self):
-        return f"{self.candidate} подписан на {self.employer}"
