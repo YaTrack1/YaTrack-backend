@@ -3,7 +3,7 @@ from drf_extra_fields.fields import Base64ImageField
 from rest_framework import serializers, relations
 
 from user.models import User
-from core.models import Organization, City, Skill
+from core.models import City, Skill
 from tracker.models import Tracker, Comparison, Favorite, Invitation
 from resume.models import Resume, SkillInResume
 from vacancy.models import Vacancy, SkillInVacancy
@@ -43,20 +43,20 @@ class CandidateInTrackerSerializer(serializers.ModelSerializer):
         )
 
 
-class OrganizationSerializer(serializers.ModelSerializer):
-    """Сериализатор модели организации."""
+# class OrganizationSerializer(serializers.ModelSerializer):
+#     """Сериализатор модели организации."""
 
-    name = serializers.PrimaryKeyRelatedField(
-        source="organization",
-        read_only=True,
-    )
-    itn = serializers.SlugRelatedField(
-        source="organization", read_only=True, slug_field="itn"
-    )
+#     name = serializers.PrimaryKeyRelatedField(
+#         source="organization",
+#         read_only=True,
+#     )
+#     itn = serializers.SlugRelatedField(
+#         source="organization", read_only=True, slug_field="itn"
+#     )
 
-    class Meta:
-        model = Organization
-        fields = "__all__"
+#     class Meta:
+#         model = Organization
+#         fields = "__all__"
 
 
 class CitySerializer(serializers.ModelSerializer):
