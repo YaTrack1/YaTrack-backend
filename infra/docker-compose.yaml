@@ -11,22 +11,16 @@ services:
       - ./.env
 
   backend:
-    image: oskalov/yatrack-back:latest
-    # build:
-    #   context: ../src/backend
-    #   dockerfile: Dockerfile
+    # image: oskalov/yatrack-back:latest
+    build:
+      context: ../src/backend
+      dockerfile: Dockerfile
     restart: always
     ports:
      - "8000:8000"
     command: >
-      bash -c "python manage.py makemigrations user &&
-      python manage.py makemigrations core &&
-      python manage.py makemigrations resume &&
-      python manage.py makemigrations tracker &&
-      python manage.py makemigrations vacancy &&
+      bash -c "
       python manage.py migrate &&
-      python manage.py parse_users &&
-      python manage.py parse_resume &&
       python manage.py collectstatic --no-input &&
       gunicorn --bind 0:8000 yatrack.wsgi"
     volumes:
