@@ -55,11 +55,13 @@ INSTALLED_APPS = [
     "djoser",  # isort:ignore
     "django_filters",  # isort:ignore
     "drf_yasg",  # isort:ignore
+    "corsheaders",
 ]
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
+    "corsheaders.middleware.CorsMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
@@ -177,6 +179,14 @@ SIMPLE_JWT = {
 
 AUTH_USER_MODEL = "user.User"
 
+# Настройки CORS
+CORS_ORIGIN_ALLOW_ALL = True
+CORS_URLS_REGEX = r"^/api/.*$"
+
+# адрес, с которого разрешены запросы
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",
+]
 
 # Константы----------------------------
 # -------------------------------------
