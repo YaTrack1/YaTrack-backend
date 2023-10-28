@@ -56,6 +56,11 @@ class User(AbstractUser):
         help_text=(settings.LENGTH_HELP),
     )
 
+    last_visited = models.DateTimeField(
+        verbose_name="Последний визит",
+        auto_now_add=False,
+    )
+
     class Meta:
         verbose_name = "Пользователь"
         verbose_name_plural = "Пользователи"
