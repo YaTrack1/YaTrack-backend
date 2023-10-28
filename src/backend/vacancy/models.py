@@ -1,4 +1,5 @@
 from django.db import models
+from django.conf import settings
 
 from user.models import User
 from core.models import City, Skill
@@ -12,19 +13,34 @@ class Vacancy(models.Model):
         on_delete=models.CASCADE,
         verbose_name="Наниматель",
     )
-    position = models.CharField("Должность")
-    specialty = models.CharField("Специализация")
+    position = models.CharField(
+        "Должность",
+        max_length=settings.MAX_LENGTH,
+    )
+    specialty = models.CharField(
+        "Специализация",
+        max_length=settings.MAX_LENGTH,
+    )
     description = models.TextField(
         verbose_name="Описание",
         null=True,
         blank=True,
     )
-    duties = models.CharField("Обязанности")
+    duties = models.CharField(
+        "Обязанности",
+        max_length=settings.MAX_LENGTH,
+    )
     city = models.ForeignKey(
         City, on_delete=models.SET_NULL, null=True, verbose_name="Город"
     )
-    conditions = models.CharField("Условия")
-    stages = models.CharField("Этапы отбора")
+    conditions = models.CharField(
+        "Условия",
+        max_length=settings.MAX_LENGTH,
+    )
+    stages = models.CharField(
+        "Этапы отбора",
+        max_length=settings.MAX_LENGTH,
+    )
 
     class Meta:
         ordering = ["position"]

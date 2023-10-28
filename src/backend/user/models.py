@@ -59,6 +59,8 @@ class User(AbstractUser):
     last_visited = models.DateTimeField(
         verbose_name="Последний визит",
         auto_now_add=False,
+        null=True,
+        blank=True,
     )
 
     class Meta:
