@@ -41,7 +41,7 @@ class Resume(models.Model):
         max_length=50,
         verbose_name="GitHub",
     )
-    portfolio = models.CharField("Портфолио")
+    portfolio = models.CharField(verbose_name="Портфолио")
     about_me = models.TextField(
         verbose_name="О себе",
     )
@@ -121,3 +121,48 @@ class SkillInResume(models.Model):
 
     def __str__(self):
         return f"{self.skill} в {self.resume}"
+
+
+class Experience(models.Model):
+    resume = models.ForeignKey(
+        Resume,
+        on_delete=models.CASCADE,
+        verbose_name="Опыт",
+        related_name="experiences",
+    )
+
+    position = models.CharField(verbose_name="Позиция")
+    period = models.CharField(verbose_name="Период")
+    duties = models.TextField(
+        verbose_name="Обязанности",
+    )
+
+    class Meta:
+        verbose_name = "Опыт"
+        verbose_name_plural = "Опыты"
+
+    def __str__(self):
+        return f"{self.position}"
+
+
+class Education(models.Model):
+    resume = models.ForeignKey(
+        Resume,
+        on_delete=models.CASCADE,
+        verbose_name="Образование",
+        related_name="educations",
+    )
+
+    grade = models.CharField(verbose_name="Уровень образования")
+    institution = models.CharField(verbose_name="Университет")
+    period = models.CharField(verbose_name="Период")
+    speciality = models.CharField(
+        verbose_name="Специальность",
+    )
+
+    class Meta:
+        verbose_name = "Образование"
+        verbose_name_plural = "Образования"
+
+    def __str__(self):
+        return f"{self.institution}"
