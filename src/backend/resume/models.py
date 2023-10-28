@@ -5,6 +5,7 @@ from django.conf import settings
 
 from user.models import User
 from core.models import Skill
+from vacancy.models import Vacancy
 
 
 class Resume(models.Model):
@@ -85,6 +86,25 @@ class Resume(models.Model):
         return (date.today() - self.birthday).year
 
     get_age.short_description = "Возраст"
+
+    def get_main_skills(
+        self, vacancy: Vacancy, amount: int
+    ) -> list[(Skill, int),]:
+        """
+        Определение главных скилов для вакансии.
+
+        Приходит:
+        vacancy - Вакансия
+        amount - число главных скилов
+
+        Уходит:
+        Список пар:
+        Skill - id? name?
+        rating - значение соотв. навыка
+        """
+        return [("Навык 1", 100), ("Навык 5", 80), ("Навык 3", 70)]
+
+    get_age.short_description = "Главные Навыки"
 
 
 class SkillInResume(models.Model):
