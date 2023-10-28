@@ -59,7 +59,7 @@ class Resume(models.Model):
     )
     date_created = models.DateTimeField(
         verbose_name="Создание резюме",
-        auto_now=False,
+        auto_now=True,
     )
     # skills = models.ManyToManyField(
     #     verbose_name="Навыки",

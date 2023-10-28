@@ -110,13 +110,13 @@ class UserViewedResume(models.Model):
         User,
         on_delete=models.CASCADE,
         verbose_name="Вакансия",
-        related_name="resumes",
+        related_name="resume",
     )
     resume = models.ForeignKey(
         Resume,
         on_delete=models.CASCADE,
         verbose_name="Резюме",
-        related_name="employer",
+        related_name="employers",
     )
 
     class Meta:
