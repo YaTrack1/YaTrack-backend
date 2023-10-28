@@ -91,6 +91,10 @@ class SkillInResume(models.Model):
         verbose_name="Резюме",
         related_name="skill_list",
     )
+    rating = models.PositiveSmallIntegerField(
+        verbose_name="Рейтинг навыка",
+        default=0,
+    )
 
     class Meta:
         ordering = ("resume",)
