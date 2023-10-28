@@ -3,7 +3,7 @@ from rest_framework.routers import DefaultRouter
 
 from api.views import (
     EmployerViewset,
-    TrackerViewset,
+    # TrackerViewset,
     ComparisonViewset,
     # FavoriteViewset,
     # InvitationViewset,
@@ -26,7 +26,7 @@ router.register(
 
 router.register("resume", ResumeViewset, basename="resume")
 
-router.register("tracker", TrackerViewset, basename="tracker")
+router.register("tracker", ComparisonViewset, basename="tracker")
 router.register(
     "tracker",
     ComparisonViewset,

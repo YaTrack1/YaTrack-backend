@@ -5,8 +5,6 @@ services:
   db:
     image: postgres:15.2-alpine
     restart: always
-    ports:
-      - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data/
     env_file:
@@ -14,12 +12,12 @@ services:
 
   backend:
     image: oskalov/yatrack-back:latest
+    # build:
+    #   context: ../src/backend
+    #   dockerfile: Dockerfile
     restart: always
     ports:
-      - "8000:8000"
-    links:
-      -
-
+     - "8000:8000"
     command: >
       bash -c "python manage.py migrate &&
       python manage.py collectstatic --no-input &&
@@ -41,7 +39,7 @@ services:
 
   nginx:
     image: nginx:1.23.4-alpine
-    restart: always
+    # restart: always
     ports:
       - "80:80"
     volumes:
@@ -54,3 +52,4 @@ services:
 volumes:
   postgres_data:
   static_value:
+  # media_value:

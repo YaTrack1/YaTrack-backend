@@ -1,10 +1,11 @@
 from django.shortcuts import get_object_or_404
-from djoser.views import UserViewSet as DjoserUserViewSet
+
+# from djoser.views import UserViewSet as DjoserUserViewSet
 
 # from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import viewsets, response, status, serializers
 from rest_framework.decorators import action
-from rest_framework.permissions import AllowAny, IsAuthenticated
+from rest_framework.permissions import AllowAny
 
 from user.models import User
 from core.models import Skill
@@ -42,7 +43,7 @@ from api.serializers import (
 from api.pagination import LimitPageNumberPagination
 
 
-class EmployerViewset(DjoserUserViewSet):
+class EmployerViewset(viewsets.ModelViewSet):
     """DjoserViewSet нанимателя."""
 
     queryset = User.objects.all().order_by("id")
@@ -50,7 +51,7 @@ class EmployerViewset(DjoserUserViewSet):
     pagination_class = LimitPageNumberPagination
 
 
-class CandidateViewset(DjoserUserViewSet):
+class CandidateViewset(viewsets.ModelViewSet):
     """DjoserViewSet кандидата."""
 
     queryset = User.objects.all().order_by("id")
@@ -91,12 +92,12 @@ class TrackerViewset(viewsets.ModelViewSet):
     # filterset_class =
     metadata_class = ("get",)
 
-    # @action(detail=False, methods=['GET'],
-    #         permission_classes=[IsAuthenticated])
-    def get_queryset(self, request, id):
-        resume = get_object_or_404(Resume, id=id)
-        serializer = TrackerSerializer({"resume": resume.id})
-        return response.Response(serializer.data, status=status.HTTP_200_OK)
+    @action(detail=False, methods=["GET"], permission_classes=[AllowAny])
+    def get_resume_obj(self):
+        return get_object_or_404(Resume, id=self.kwargs.get("resume_id"))
+
+    def get_queryset(self):
+        return self.get_resume_obj().vacancy.all()
 
 
 class ComparisonViewset(viewsets.ModelViewSet):
@@ -114,7 +115,7 @@ class ComparisonViewset(viewsets.ModelViewSet):
             "delete",
         ),
         url_path=r"(?P<vacancy_id>\d+)/comparison",
-        permission_classes=[IsAuthenticated],
+        permission_classes=[AllowAny],
     )
     def add_to_comparisons(self, request, id):
         resume = get_object_or_404(Resume, id=id)
@@ -152,7 +153,7 @@ class ComparisonViewset(viewsets.ModelViewSet):
             "delete",
         ),
         url_path=r"(?P<vacancy_id>\d+)/favorite",
-        permission_classes=[IsAuthenticated],
+        permission_classes=[AllowAny],
     )
     def add_to_favorites(self, request, id):
         resume = get_object_or_404(Resume, id=id)
@@ -190,7 +191,7 @@ class ComparisonViewset(viewsets.ModelViewSet):
             "delete",
         ),
         url_path=r"(?P<vacancy_id>\d+)/invitation",
-        permission_classes=[IsAuthenticated],
+        permission_classes=[AllowAny],
     )
     def add_to_invitation(self, request, id):
         resume = get_object_or_404(Resume, id=id)
@@ -287,7 +288,7 @@ class ResumeViewset(viewsets.ModelViewSet):
 class VacancyViewset(viewsets.ModelViewSet):
     queryset = Vacancy.objects.all()
     serializer_class = VacancySerializer
-    # permission_classes = (IsAuthor,)
+    permission_classes = (AllowAny,)
     pagination_class = LimitPageNumberPagination
     # filterset_class = VacancyFilter
 
