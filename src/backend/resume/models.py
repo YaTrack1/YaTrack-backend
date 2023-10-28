@@ -1,3 +1,5 @@
+from datetime import date
+
 from django.db import models
 from django.conf import settings
 
@@ -75,6 +77,12 @@ class Resume(models.Model):
 
     def __str__(self):
         return f"{self.candidate}" if hasattr(self, "candidate") else ""
+
+    def get_age(self) -> int:
+        """Получить возраст кандидата."""
+        return (date.today() - self.birthday).year
+
+    get_age.short_description = "Возраст"
 
 
 class SkillInResume(models.Model):
