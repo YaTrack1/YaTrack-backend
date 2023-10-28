@@ -3,6 +3,7 @@ from django.conf import settings
 
 from vacancy.models import Vacancy
 from resume.models import Resume
+from user.models import User
 
 
 class Tracker(models.Model):
@@ -100,3 +101,36 @@ class Invitation(ResumeInVacancy):
                 name="unique_invitation_resume",
             ),
         )
+
+
+class UserViewedResume(models.Model):
+    """Модель пользователь просмотрел резюме."""
+
+    employer = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        verbose_name="Вакансия",
+        related_name="resumes",
+    )
+    resume = models.ForeignKey(
+        Resume,
+        on_delete=models.CASCADE,
+        verbose_name="Резюме",
+        related_name="employer",
+    )
+
+    class Meta:
+        verbose_name = "Просьотр"
+        verbose_name_plural = "Просмотры"
+        constraints = (
+            models.UniqueConstraint(
+                fields=(
+                    "employer",
+                    "resume",
+                ),
+                name="unique_employer_resume",
+            ),
+        )
+
+    def __str__(self):
+        return f"{self.employer} просмотрел {self.resume}"
