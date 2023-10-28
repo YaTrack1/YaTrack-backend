@@ -18,7 +18,7 @@ class Tracker(models.Model):
         verbose_name_plural = "Трекер"
 
     def __str__(self):
-        return self.resume
+        return "self.resume" if hasattr(self, "resume") else " "
 
 
 class ResumeInVacancy(models.Model):

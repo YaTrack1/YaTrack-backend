@@ -36,7 +36,7 @@ class Resume(models.Model):
     #     verbose_name="Город",
     # )
     # grade = models.CharField("Грейд")
-    city = models.CharField(verbose_name="Город")
+    city = models.CharField(verbose_name="Город", max_length=50)
     telegram = models.CharField(
         max_length=50,
         verbose_name="Телеграм",
@@ -45,7 +45,7 @@ class Resume(models.Model):
         max_length=50,
         verbose_name="GitHub",
     )
-    portfolio = models.CharField(verbose_name="Портфолио")
+    portfolio = models.CharField(verbose_name="Портфолио", max_length=50)
     about_me = models.TextField(
         verbose_name="О себе",
     )
@@ -69,7 +69,7 @@ class Resume(models.Model):
         auto_now=True,
     )
     level = models.CharField(
-        verbose_name="Портфолио",
+        verbose_name="Уровень",
         max_length=settings.MAX_LENGTH,
     )
     # skills = models.ManyToManyField(

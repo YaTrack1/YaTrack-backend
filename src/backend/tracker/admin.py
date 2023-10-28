@@ -1,6 +1,13 @@
 from django.contrib import admin
 
-from tracker.models import Tracker, Comparison, Favorite, Invitation
+from tracker.models import (
+    Tracker,
+    Comparison,
+    Favorite,
+    Invitation,
+    Interested,
+    UserViewedResume,
+)
 
 
 @admin.register(Tracker)
@@ -60,3 +67,13 @@ class InvitationAdmin(admin.ModelAdmin):
         "vacancy",
     )
     empty_value_display = "--пусто--"
+
+
+@admin.register(Interested)
+class InterestedAdmin(admin.ModelAdmin):
+    pass
+
+
+@admin.register(UserViewedResume)
+class UserViewedResume(admin.ModelAdmin):
+    pass

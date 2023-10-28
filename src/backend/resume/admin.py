@@ -1,9 +1,19 @@
 from django.contrib import admin
 
-from resume.models import Resume, SkillInResume
+from resume.models import Resume, SkillInResume, Experience, Education
 
 # admin.site.register(City)
 # admin.site.register(ResumeSkill)
+
+
+class ExperienceInline(admin.StackedInline):
+    model = Experience
+    extra = 0
+
+
+class EducationInline(admin.StackedInline):
+    model = Education
+    extra = 0
 
 
 class SkillInResumeInline(admin.StackedInline):
@@ -13,5 +23,9 @@ class SkillInResumeInline(admin.StackedInline):
 
 @admin.register(Resume)
 class ResumeAdmin(admin.ModelAdmin):
-    list_display = ("title",)
-    inlines = (SkillInResumeInline,)
+    # list_display = ("title",)
+    inlines = (
+        SkillInResumeInline,
+        ExperienceInline,
+        EducationInline,
+    )
