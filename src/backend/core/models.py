@@ -8,7 +8,7 @@ class NameModel(models.Model):
         verbose_name="Название",
         max_length=50,
         unique=True,
-        primary_key=True,
+        # primary_key=True,
     )
 
     class Meta:

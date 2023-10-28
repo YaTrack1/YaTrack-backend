@@ -1,8 +1,11 @@
+from datetime import date
+
 from django.db import models
 from django.conf import settings
 
 from user.models import User
 from core.models import Skill
+from vacancy.models import Vacancy
 
 
 class Resume(models.Model):
@@ -39,6 +42,7 @@ class Resume(models.Model):
         max_length=50,
         verbose_name="GitHub",
     )
+    portfolio = models.CharField(verbose_name="Портфолио")
     about_me = models.TextField(
         verbose_name="О себе",
     )
@@ -57,6 +61,11 @@ class Resume(models.Model):
         default=settings.ZERO,
         verbose_name="Статус",
     )
+    date_created = models.DateTimeField(
+        verbose_name="Создание резюме",
+        auto_now=True,
+    )
+    level = models.CharField(verbose_name="Портфолио")
     # skills = models.ManyToManyField(
     #     verbose_name="Навыки",
     #     related_name="resumes",
@@ -72,6 +81,31 @@ class Resume(models.Model):
     def __str__(self):
         return f"{self.candidate}" if hasattr(self, "candidate") else ""
 
+    def get_age(self) -> int:
+        """Получить возраст кандидата."""
+        return (date.today() - self.birthday).year
+
+    get_age.short_description = "Возраст"
+
+    def get_main_skills(
+        self, vacancy: Vacancy, amount: int
+    ) -> list[(Skill, int),]:
+        """
+        Определение главных скилов для вакансии.
+
+        Приходит:
+        vacancy - Вакансия
+        amount - число главных скилов
+
+        Уходит:
+        Список пар:
+        Skill - id? name?
+        rating - значение соотв. навыка
+        """
+        return [("Навык 1", 100), ("Навык 5", 80), ("Навык 3", 70)]
+
+    get_age.short_description = "Главные Навыки"
+
 
 class SkillInResume(models.Model):
     skill = models.ForeignKey(
@@ -86,6 +120,10 @@ class SkillInResume(models.Model):
         on_delete=models.CASCADE,
         verbose_name="Резюме",
         related_name="skill_list",
+    )
+    rating = models.PositiveSmallIntegerField(
+        verbose_name="Рейтинг навыка",
+        default=0,
     )
 
     class Meta:
@@ -104,3 +142,48 @@ class SkillInResume(models.Model):
 
     def __str__(self):
         return f"{self.skill} в {self.resume}"
+
+
+class Experience(models.Model):
+    resume = models.ForeignKey(
+        Resume,
+        on_delete=models.CASCADE,
+        verbose_name="Опыт",
+        related_name="experiences",
+    )
+
+    position = models.CharField(verbose_name="Позиция")
+    period = models.CharField(verbose_name="Период")
+    duties = models.TextField(
+        verbose_name="Обязанности",
+    )
+
+    class Meta:
+        verbose_name = "Опыт"
+        verbose_name_plural = "Опыты"
+
+    def __str__(self):
+        return f"{self.position}"
+
+
+class Education(models.Model):
+    resume = models.ForeignKey(
+        Resume,
+        on_delete=models.CASCADE,
+        verbose_name="Образование",
+        related_name="educations",
+    )
+
+    grade = models.CharField(verbose_name="Уровень образования")
+    institution = models.CharField(verbose_name="Университет")
+    period = models.CharField(verbose_name="Период")
+    speciality = models.CharField(
+        verbose_name="Специальность",
+    )
+
+    class Meta:
+        verbose_name = "Образование"
+        verbose_name_plural = "Образования"
+
+    def __str__(self):
+        return f"{self.institution}"
