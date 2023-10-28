@@ -39,7 +39,7 @@ class CandidateInTrackerSerializer(serializers.ModelSerializer):
         fields = (
             "first_name",
             "last_name",
-            "last_login",
+            # "last_login",
         )
 
 
