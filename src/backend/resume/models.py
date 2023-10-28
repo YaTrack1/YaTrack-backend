@@ -64,6 +64,7 @@ class Resume(models.Model):
         verbose_name="Создание резюме",
         auto_now=True,
     )
+    level = models.CharField(verbose_name="Портфолио")
     # skills = models.ManyToManyField(
     #     verbose_name="Навыки",
     #     related_name="resumes",
