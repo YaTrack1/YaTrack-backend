@@ -79,6 +79,24 @@ class Favorite(ResumeInVacancy):
         )
 
 
+class Interested(ResumeInVacancy):
+    """Модель заинтересованный кандидат относительно вакансии."""
+
+    class Meta:
+        verbose_name = "Заинтерисованный"
+        verbose_name_plural = "Заинтересованные"
+        default_related_name = "interested"
+        constraints = (
+            models.UniqueConstraint(
+                fields=(
+                    "vacancy",
+                    "resume",
+                ),
+                name="unique_interested_resume",
+            ),
+        )
+
+
 class Invitation(ResumeInVacancy):
     """Модель приглашенных кандидатов по резюме."""
 
