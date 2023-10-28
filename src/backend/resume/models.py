@@ -41,6 +41,7 @@ class Resume(models.Model):
         max_length=50,
         verbose_name="GitHub",
     )
+    portfolio = models.CharField("Портфолио")
     about_me = models.TextField(
         verbose_name="О себе",
     )
