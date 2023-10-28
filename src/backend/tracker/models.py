@@ -1,4 +1,5 @@
 from django.db import models
+from django.conf import settings
 
 from vacancy.models import Vacancy
 from resume.models import Resume
@@ -79,6 +80,12 @@ class Favorite(ResumeInVacancy):
 
 class Invitation(ResumeInVacancy):
     """Модель приглашенных кандидатов по резюме."""
+
+    status = models.PositiveSmallIntegerField(
+        choices=settings.STATUS_INVITATION,
+        default=settings.ZERO,
+        verbose_name="Статус",
+    )
 
     class Meta:
         verbose_name = "Приглашенный"
