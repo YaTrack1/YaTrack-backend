@@ -11,7 +11,10 @@ from vacancy.models import Vacancy
 class Resume(models.Model):
     """Модель резюме."""
 
-    title = models.CharField("Заголовок")
+    title = models.CharField(
+        "Заголовок",
+        max_length=settings.MAX_LENGTH,
+    )
     candidate = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
@@ -33,7 +36,7 @@ class Resume(models.Model):
     #     verbose_name="Город",
     # )
     # grade = models.CharField("Грейд")
-    city = models.CharField(verbose_name="Город")
+    city = models.CharField(verbose_name="Город", max_length=50)
     telegram = models.CharField(
         max_length=50,
         verbose_name="Телеграм",
@@ -42,7 +45,7 @@ class Resume(models.Model):
         max_length=50,
         verbose_name="GitHub",
     )
-    portfolio = models.CharField(verbose_name="Портфолио")
+    portfolio = models.CharField(verbose_name="Портфолио", max_length=50)
     about_me = models.TextField(
         verbose_name="О себе",
     )
@@ -65,7 +68,10 @@ class Resume(models.Model):
         verbose_name="Создание резюме",
         auto_now=True,
     )
-    level = models.CharField(verbose_name="Портфолио")
+    level = models.CharField(
+        verbose_name="Уровень",
+        max_length=settings.MAX_LENGTH,
+    )
     # skills = models.ManyToManyField(
     #     verbose_name="Навыки",
     #     related_name="resumes",
@@ -152,8 +158,14 @@ class Experience(models.Model):
         related_name="experiences",
     )
 
-    position = models.CharField(verbose_name="Позиция")
-    period = models.CharField(verbose_name="Период")
+    position = models.CharField(
+        verbose_name="Позиция",
+        max_length=settings.MAX_LENGTH,
+    )
+    period = models.CharField(
+        verbose_name="Период",
+        max_length=settings.MAX_LENGTH,
+    )
     duties = models.TextField(
         verbose_name="Обязанности",
     )
@@ -174,11 +186,21 @@ class Education(models.Model):
         related_name="educations",
     )
 
-    grade = models.CharField(verbose_name="Уровень образования")
-    institution = models.CharField(verbose_name="Университет")
-    period = models.CharField(verbose_name="Период")
+    grade = models.CharField(
+        verbose_name="Уровень образования",
+        max_length=settings.MAX_LENGTH,
+    )
+    institution = models.CharField(
+        verbose_name="Университет",
+        max_length=settings.MAX_LENGTH,
+    )
+    period = models.CharField(
+        verbose_name="Период",
+        max_length=settings.MAX_LENGTH,
+    )
     speciality = models.CharField(
         verbose_name="Специальность",
+        max_length=settings.MAX_LENGTH,
     )
 
     class Meta:
