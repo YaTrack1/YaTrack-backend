@@ -4,7 +4,7 @@ from django.db import models
 from django.conf import settings
 
 from user.models import User
-from core.models import Skill
+from core.models import City, Skill
 from vacancy.models import Vacancy
 
 
@@ -30,13 +30,14 @@ class Resume(models.Model):
         choices=settings.GENDER_FLAG,
         verbose_name="Пол",
     )
-    # city = models.ForeignKey(
-    #     City,
-    #     on_delete=models.SET_NULL,
-    #     verbose_name="Город",
-    # )
+    city = models.ForeignKey(
+        City,
+        on_delete=models.SET_NULL,
+        null=True,
+        verbose_name="Город",
+    )
     # grade = models.CharField("Грейд")
-    city = models.CharField(verbose_name="Город", max_length=50)
+    # city = models.CharField(verbose_name="Город", max_length=50)
     telegram = models.CharField(
         max_length=50,
         verbose_name="Телеграм",

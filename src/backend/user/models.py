@@ -136,10 +136,17 @@ class User(models.Model):
         ],
         help_text=(settings.LENGTH_HELP),
     )
-    last_visited = models.CharField(
+    last_visited = models.DateTimeField(
         verbose_name="Последний визит",
+        auto_now_add=True,
     )
+    # last_visited = models.CharField(
+    #     verbose_name="Последний визит",
+    # )
 
     class Meta:
         verbose_name = "Пользователь"
         verbose_name_plural = "Пользователи"
+
+    def __str__(self) -> str:
+        return f"{self.username}"
