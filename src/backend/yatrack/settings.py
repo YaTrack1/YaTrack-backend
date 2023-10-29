@@ -53,7 +53,7 @@ INSTALLED_APPS = [
     "resume.apps.ResumeConfig",
     "core.apps.CoreConfig",
     "rest_framework",  # isort:ignore
-    "rest_framework.authtoken",  # isort:ignore
+    # "rest_framework.authtoken",  # isort:ignore
     # "djoser",  # isort:ignore
     "django_filters",  # isort:ignore
     "drf_yasg",  # isort:ignore
