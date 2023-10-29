@@ -90,7 +90,8 @@ class Resume(models.Model):
 
     def get_age(self) -> int:
         """Получить возраст кандидата."""
-        return (date.today() - self.birthday).year
+        age = date.today() - self.birthday
+        return int((age).days / 365.25)
 
     get_age.short_description = "Возраст"
 

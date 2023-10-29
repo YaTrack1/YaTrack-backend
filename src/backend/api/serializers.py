@@ -13,7 +13,7 @@ from tracker.models import (
     Invitation,
     UserViewedResume,
 )
-from resume.models import Resume, SkillInResume
+from resume.models import Resume, SkillInResume, Experience, Education
 from vacancy.models import Vacancy, SkillInVacancy
 
 
@@ -396,6 +396,88 @@ class Resume2Serializer(serializers.ModelSerializer):
         """Получение ids резюме, которые наниматель отметили."""
         return Interested.objects.filter(resume=resume).values_list(
             "vacancy_id", flat=True
+        )
+
+    def get_mainSkills(
+        self, resume
+    ) -> list[(Skill, int),]:
+        """Получение главных навыков резюме для данной вакансии."""
+        vacancy_id = self.context["vacancy_id"]
+        print(vacancy_id)
+        return resume.get_main_skills(vacancy_id, settings.AMOUNT_MAIN_SKILLS)
+
+
+class ExperienceSerializer(serializers.ModelSerializer):
+    """Сериализатор опыт кандидата."""
+
+    class Meta:
+        model = Experience
+        fields = (
+            "position",
+            "period",
+            "duties",
+        )
+
+
+class DetailedResumeSerializer(serializers.ModelSerializer):
+    """Сериализатор модели подробного резюме."""
+
+    name = serializers.CharField(source="candidate.username")
+    age = serializers.CharField(source="get_age")
+    city = serializers.CharField(source="city.name")
+    jobType = serializers.SerializerMethodField()
+    contacts = serializers.CharField(source="telegram")
+    about = serializers.CharField(source="about_me")
+    skills = serializers.SerializerMethodField()
+    experience = serializers.SerializerMethodField()
+    education = serializers.SerializerMethodField()
+    lastVisited = serializers.DateTimeField(source="candidate.last_visited")
+    mainSkills = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Resume
+        fields = (
+            "name",
+            "photo",
+            "level",
+            "age",
+            "city",
+            "jobType",
+            "portfolio",
+            "contacts",
+            "about",
+            "skills",
+            "experience",
+            "education",
+            "lastVisited",
+            "mainSkills",
+        )
+
+    def get_jobType(self, resume):
+        return settings.TYPE_WORK[resume.status_type_work][1]
+
+    def get_skills(
+        self, resume
+    ) -> list[(Skill, int),]:
+        return list(
+            SkillInResume.objects.filter(resume=resume)
+            .order_by("-rating")
+            .values_list("skill__name", "rating")
+        )
+
+    def get_experience(self, resume) -> list[str]:
+        return Experience.objects.filter(resume=resume).values(
+            "position",
+            "period",
+            "duties",
+        )
+
+    def get_education(self, resume) -> list[str]:
+        return Education.objects.filter(resume=resume).values(
+            "grade",
+            "institution",
+            "period",
+            "speciality",
         )
 
     def get_mainSkills(

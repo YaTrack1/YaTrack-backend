@@ -28,6 +28,7 @@ from api.serializers import (
     ComparisonSerializer,
     FavoriteSerializer,
     InvitationSerializer,
+    DetailedResumeSerializer,
     ResumeSerializer,
     Resume2Serializer,
     ResumeInTrackerSerializer,
@@ -324,12 +325,17 @@ class Vacancy2ViewSet(viewsets.ModelViewSet):
 
 class Resume2ViewSet(viewsets.ModelViewSet):
     queryset = Resume.objects.all()
-    serializer_class = Resume2Serializer
+    # serializer_class = Resume2Serializer
     # pagination_class = LimitPageNumberPagination
     # filterset_class =
     http_method_names = [
         "get",
     ]
+
+    def get_serializer_class(self, *args, **kwargs):
+        if self.action == "list":
+            return Resume2Serializer
+        return DetailedResumeSerializer
 
     def get_serializer_context(self):
         context = super().get_serializer_context()
