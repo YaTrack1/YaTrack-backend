@@ -13,23 +13,6 @@
 ## Стек технологий
 ![Python](https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54) ![Django](https://img.shields.io/badge/django-%23092E20.svg?style=for-the-badge&logo=django&logoColor=white) ![DjangoREST](https://img.shields.io/badge/DJANGO-REST-ff1709?style=for-the-badge&logo=django&logoColor=white&color=ff1709&labelColor=gray) ![Swagger](https://img.shields.io/badge/-Swagger-%23Clojure?style=for-the-badge&logo=swagger&logoColor=white) ![Docker](https://img.shields.io/badge/docker-%230db7ed.svg?style=for-the-badge&logo=docker&logoColor=white) ![Postgres](https://img.shields.io/badge/postgres-%23316192.svg?style=for-the-badge&logo=postgresql&logoColor=white) ![Nginx](https://img.shields.io/badge/nginx-%23009639.svg?style=for-the-badge&logo=nginx&logoColor=white)
 
-<details><summary><h2>Структура проекта</h2></summary>
-    <details><summary><h4>Структура базы данных</h4></summary>
-        <img src="/docs/BD_YaTrack.jpg"/>
-    </details>
-    <details><summary><h4>Структура репозитория</h4></summary>
-        <img src="/docs/rep_YaTrack.jpg"/>
-    </details>
-    <details><summary><h4>Специфика ендпойнтов в Swagger</h4></summary>
-        <img src="/docs/sw_YaTrack.jpg"/>
-    </details>
-    <details><summary><h4>Документация Redoc</h4></summary>
-        <img src="/docs/doc_YaTrack.jpg"/>
-    </details>
-</details>
-
----
-
 <details><summary><h2>Адрес проекта</h2></summary>
 
 *(запускается локально)*
@@ -195,19 +178,6 @@ api/tracker/<vacancy_id>/invitation/  # Приглашенные кандида�
 
 ### Команда проекта
 
-**Проджект**:
-- Ефремов Андрей (*Telegram*: [@AndreyEfremoff](https://t.me/AndreyEfremoff))
-
-**Дизайнеры**:
-- Федорова Анастасия (*Telegram*: [@cccrayfish](https://t.me/cccrayfish))
-- Бурганова Алина (*Telegram*: [@alikaburganova](https://t.me/alikaburganova))
-- Пунгин Александр (*Telegram*: [@vorobushki_com](https://t.me/vorobushki_com))
-
 **Backend-разработчики**:
 - Оскалов Лев (*Telegram*: [@oskalov](https://t.me/oskalov), **Github**: [Oskalovlev](https://github.com/Oskalovlev))
 - Зюзин Андрей (*Telegram*: [@andrey_bpz](https://t.me/andrey_bpz), **Github**: [AndreyZyuzin](https://github.com/AndreyZyuzin))
-
-**Frontend-разработчики**:
-- Меначо-Пахес Юлия (*Telegram*: [@yuliamenachopages](https://t.me/yuliamenachopages), **Github**: [YuliaMenachoPages](https://github.com/https://github.com/YuliaMenachoPages))
-- Дук Юлия (*Telegram*: [@YuliaD1002](https://t.me/YuliaD1002), **Github**: [YuliaDuk](https://github.com/YuliaDuk))
-- Бартош Константин (*Telegram*: [@k_bartosh](https://t.me/k_bartosh), **Github**: [KonstaBartosh](https://github.com/KonstaBartosh))
