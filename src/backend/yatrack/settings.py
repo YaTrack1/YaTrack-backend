@@ -12,7 +12,9 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 
 import os
 from pathlib import Path
-from datetime import datetime, timedelta
+from datetime import datetime
+
+# , timedelta
 
 from django.core.management.utils import get_random_secret_key
 from dotenv import load_dotenv
@@ -52,14 +54,16 @@ INSTALLED_APPS = [
     "core.apps.CoreConfig",
     "rest_framework",  # isort:ignore
     "rest_framework.authtoken",  # isort:ignore
-    "djoser",  # isort:ignore
+    # "djoser",  # isort:ignore
     "django_filters",  # isort:ignore
     "drf_yasg",  # isort:ignore
+    "corsheaders",
 ]
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
+    "corsheaders.middleware.CorsMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
@@ -140,43 +144,40 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 
 REST_FRAMEWORK = {
-    "DEFAULT_RENDERER_CLASSES": [
-        "rest_framework.renderers.JSONRenderer",
-        "rest_framework.renderers.BrowsableAPIRenderer",
-    ],
-    "DEFAULT_PERMISSION_CLASSES": [
-        "rest_framework.permissions.IsAuthenticatedOrReadOnly",
-    ],
-    "DEFAULT_AUTHENTICATION_CLASSES": [
-        "rest_framework.authentication.TokenAuthentication",
-    ],
-    "DEFAULT_FILTER_BACKENDS": (
-        "django_filters.rest_framework.DjangoFilterBackend",
-    ),
+    "DEFAULT_AUTHENTICATION_CLASSES": [],
+    "DEFAULT_PERMISSION_CLASSES": [],
 }
 
-DJOSER = {
-    "LOGIN_FIELD": "email",
-    # "SEND_ACTIVATION_EMAIL": False,
-    # "HIDE_USERS": False,
-    # "PERMISSIONS": {
-    #     "user": ["djoser.permissions.CurrentUserOrAdminOrReadOnly"],
-    #     "user_list": ["rest_framework.permissions.AllowAny"],
-    # },
-    # "SERIALIZERS": {
-    #     # "user": "api.serializers.UserSerializer",
-    #     # "current_user": "api.serializers.UserSerializer",
-    #     "user_create": "djoser.serializers.UserCreateSerializer",
-    # },
-}
-SIMPLE_JWT = {
-    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=5),
-    "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
-    "AUTH_HEADER_TYPES": ("Bearer",),
-}
+# DJOSER = {
+#     "LOGIN_FIELD": "email",
+# "SEND_ACTIVATION_EMAIL": False,
+# "HIDE_USERS": False,
+# "PERMISSIONS": {
+#     "user": ["djoser.permissions.CurrentUserOrAdminOrReadOnly"],
+#     "user_list": ["rest_framework.permissions.AllowAny"],
+# },
+# "SERIALIZERS": {
+#     # "user": "api.serializers.UserSerializer",
+#     # "current_user": "api.serializers.UserSerializer",
+#     "user_create": "djoser.serializers.UserCreateSerializer",
+# },
+# }
+# SIMPLE_JWT = {
+#     "ACCESS_TOKEN_LIFETIME": timedelta(minutes=5),
+#     "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
+#     "AUTH_HEADER_TYPES": ("Bearer",),
+# }
 
-AUTH_USER_MODEL = "user.User"
+# AUTH_USER_MODEL = "user.User"
 
+# Настройки CORS
+CORS_ORIGIN_ALLOW_ALL = True
+CORS_URLS_REGEX = r"^/api/.*$"
+
+# адрес, с которого разрешены запросы
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",
+]
 
 # Константы----------------------------
 # -------------------------------------
@@ -194,6 +195,12 @@ STATUS_FIDED = [
     (1, "В поиске"),
     (2, "В отпуске"),
     (3, "Найден"),
+]
+STATUS_INVITATION = [
+    (0, "Не известно"),
+    (1, "Принято"),
+    (2, "Отказ"),
+    (3, "Ожидание"),
 ]
 
 # Юзер-админ

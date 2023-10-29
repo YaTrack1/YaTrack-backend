@@ -1,7 +1,9 @@
 from django.db import models
+from django.conf import settings
 
 from vacancy.models import Vacancy
 from resume.models import Resume
+from user.models import User
 
 
 class Tracker(models.Model):
@@ -16,7 +18,7 @@ class Tracker(models.Model):
         verbose_name_plural = "Трекер"
 
     def __str__(self):
-        return self.resume
+        return "self.resume" if hasattr(self, "resume") else " "
 
 
 class ResumeInVacancy(models.Model):
@@ -77,8 +79,32 @@ class Favorite(ResumeInVacancy):
         )
 
 
+class Interested(ResumeInVacancy):
+    """Модель заинтересованный кандидат относительно вакансии."""
+
+    class Meta:
+        verbose_name = "Заинтерисованный"
+        verbose_name_plural = "Заинтересованные"
+        default_related_name = "interested"
+        constraints = (
+            models.UniqueConstraint(
+                fields=(
+                    "vacancy",
+                    "resume",
+                ),
+                name="unique_interested_resume",
+            ),
+        )
+
+
 class Invitation(ResumeInVacancy):
     """Модель приглашенных кандидатов по резюме."""
+
+    status = models.PositiveSmallIntegerField(
+        choices=settings.STATUS_INVITATION,
+        default=settings.ZERO,
+        verbose_name="Статус",
+    )
 
     class Meta:
         verbose_name = "Приглашенный"
@@ -93,3 +119,36 @@ class Invitation(ResumeInVacancy):
                 name="unique_invitation_resume",
             ),
         )
+
+
+class UserViewedResume(models.Model):
+    """Модель пользователь просмотрел резюме."""
+
+    employer = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        verbose_name="Вакансия",
+        related_name="resume",
+    )
+    resume = models.ForeignKey(
+        Resume,
+        on_delete=models.CASCADE,
+        verbose_name="Резюме",
+        related_name="employers",
+    )
+
+    class Meta:
+        verbose_name = "Просьотр"
+        verbose_name_plural = "Просмотры"
+        constraints = (
+            models.UniqueConstraint(
+                fields=(
+                    "employer",
+                    "resume",
+                ),
+                name="unique_employer_resume",
+            ),
+        )
+
+    def __str__(self):
+        return f"{self.employer} просмотрел {self.resume}"
