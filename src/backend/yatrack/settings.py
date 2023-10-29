@@ -206,6 +206,8 @@ STATUS_INVITATION = [
     (3, "Ожидание"),
 ]
 
+AMOUNT_MAIN_SKILLS = 3
+
 # Юзер-админ
 MAIL_LENGTH = 255
 MAIL_VALID = r"[^@]+@[^@]+\.[^@]+"

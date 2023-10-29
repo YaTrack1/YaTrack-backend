@@ -29,10 +29,12 @@ from api.serializers import (
     FavoriteSerializer,
     InvitationSerializer,
     ResumeSerializer,
+    Resume2Serializer,
     ResumeInTrackerSerializer,
     ResumeCreateSerializer,
     # SkillInResumeSerializer,
     VacancySerializer,
+    Vacancy2Serializer,
     VacancyReadListSerializer,
     VacancyCreateSerializer,
     # SkillInVacancySerializer,
@@ -304,3 +306,32 @@ class VacancyViewset(viewsets.ModelViewSet):
 #     # permission_classes =
 #     pagination_class = LimitPageNumberPagination
 #     # filterset_class =
+
+
+class Vacancy2ViewSet(viewsets.ModelViewSet):
+    # queryset = Vacancy.objects.all()
+    serializer_class = Vacancy2Serializer
+    # pagination_class = LimitPageNumberPagination
+    # filterset_class = VacancyFilter
+    http_method_names = [
+        "get",
+    ]
+
+    def get_queryset(self):
+        user = get_object_or_404(User, id=self.kwargs.get("user_id"))
+        return user.vacancys.all()
+
+
+class Resume2ViewSet(viewsets.ModelViewSet):
+    queryset = Resume.objects.all()
+    serializer_class = Resume2Serializer
+    # pagination_class = LimitPageNumberPagination
+    # filterset_class =
+    http_method_names = [
+        "get",
+    ]
+
+    def get_serializer_context(self):
+        context = super().get_serializer_context()
+        context["vacancy_id"] = int(self.kwargs.get("vacancy_id"))
+        return context

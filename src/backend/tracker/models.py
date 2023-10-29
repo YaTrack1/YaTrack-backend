@@ -138,7 +138,7 @@ class UserViewedResume(models.Model):
     )
 
     class Meta:
-        verbose_name = "Просьотр"
+        verbose_name = "Просмотр"
         verbose_name_plural = "Просмотры"
         constraints = (
             models.UniqueConstraint(

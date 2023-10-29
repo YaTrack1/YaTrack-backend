@@ -5,7 +5,7 @@ from django.conf import settings
 
 from user.models import User
 from core.models import City, Skill
-from vacancy.models import Vacancy
+from vacancy.models import Vacancy, SkillInVacancy
 
 
 class Resume(models.Model):
@@ -109,7 +109,18 @@ class Resume(models.Model):
         Skill - id? name?
         rating - значение соотв. навыка
         """
-        return [("Навык 1", 100), ("Навык 5", 80), ("Навык 3", 70)]
+        vacancy = Vacancy.objects.get(id=vacancy)
+        skill_ids_vacancy = (
+            SkillInVacancy.objects.filter(vacancy=vacancy).order_by(
+                "-importance"
+            )[: settings.AMOUNT_MAIN_SKILLS]
+            # .values_list('importance', 'skill', 'skill__name')
+            .values_list("skill", flat=True)
+        )
+        skills_in_resume = SkillInResume.objects.filter(
+            resume=self, skill_id__in=list(skill_ids_vacancy)
+        ).values_list("skill__name", "rating")
+        return list(skills_in_resume)
 
     get_age.short_description = "Главные Навыки"
 

@@ -1,10 +1,18 @@
 from django.db.transaction import atomic
 from drf_extra_fields.fields import Base64ImageField
 from rest_framework import serializers, relations
+from django.conf import settings
 
 from user.models import User
 from core.models import City, Skill
-from tracker.models import Tracker, Comparison, Favorite, Invitation
+from tracker.models import (
+    Tracker,
+    Comparison,
+    Favorite,
+    Interested,
+    Invitation,
+    UserViewedResume,
+)
 from resume.models import Resume, SkillInResume
 from vacancy.models import Vacancy, SkillInVacancy
 
@@ -304,3 +312,96 @@ class InvitationSerializer(serializers.ModelSerializer):
 #             "candidate",
 #             "gender",
 #         )
+
+
+class InvitedSerializer(serializers.ModelSerializer):
+    """Сериализатор модели просматривал пользователь резюме."""
+
+    class Meta:
+        model = UserViewedResume
+        fields = ("id", "status")
+
+
+class Vacancy2Serializer(serializers.ModelSerializer):
+    """Сериализатор модели вакансии конкретного нанимателя."""
+
+    title = serializers.CharField(source="position")
+    newResumes = serializers.SerializerMethodField()
+    favourites = serializers.SerializerMethodField()
+    invited = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Vacancy
+        fields = (
+            "title",
+            "newResumes",
+            "favourites",
+            "invited",
+        )
+
+    def get_newResumes(
+        self, vacancy
+    ) -> list[int,]:
+        """Получение ids резюме, которые наниматель ещё не смотрел."""
+        resume_ids = UserViewedResume.objects.filter(
+            employer=vacancy.author
+        ).values_list("resume_id", flat=True)
+        return Resume.objects.exclude(id__in=resume_ids).values_list(
+            "id", flat=True
+        )
+
+    def get_favourites(
+        self, vacancy
+    ) -> list[int,]:
+        """Получение ids резюме, которые наниматель отметили."""
+        return Favorite.objects.filter(vacancy=vacancy).values_list(
+            "resume_id", flat=True
+        )
+
+    def get_invited(
+        self, vacancy
+    ) -> list[dict,]:
+        """Получение id резюме и его статус приглашения."""
+        res = Invitation.objects.filter(vacancy=vacancy).values_list(
+            "resume_id", "status"
+        )
+        return [
+            {"id": item[0], "status": settings.STATUS_INVITATION[item[1]][1]}
+            for item in res
+        ]
+
+
+class Resume2Serializer(serializers.ModelSerializer):
+    """Сериализатор модели вакансии конкретного нанимателя."""
+
+    name = serializers.CharField(source="candidate.username")
+    lastVisited = serializers.DateTimeField(source="candidate.last_visited")
+    interested = serializers.SerializerMethodField()
+    mainSkills = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Resume
+        fields = (
+            "name",
+            "photo",
+            "level",
+            "lastVisited",
+            "interested",
+            "mainSkills",
+        )
+
+    def get_interested(
+        self, resume
+    ) -> list[int,]:
+        """Получение ids резюме, которые наниматель отметили."""
+        return Interested.objects.filter(resume=resume).values_list(
+            "vacancy_id", flat=True
+        )
+
+    def get_mainSkills(
+        self, resume
+    ) -> list[(Skill, int),]:
+        """Получение главных навыков резюме для данной вакансии."""
+        vacancy_id = self.context["vacancy_id"]
+        print(vacancy_id)
+        return resume.get_main_skills(vacancy_id, settings.AMOUNT_MAIN_SKILLS)
