@@ -1,11 +1,19 @@
 from django.db.transaction import atomic
 from drf_extra_fields.fields import Base64ImageField
 from rest_framework import serializers, relations
+from django.conf import settings
 
 from user.models import User
 from core.models import City, Skill
-from tracker.models import Tracker, Comparison, Favorite, Invitation
-from resume.models import Resume, SkillInResume
+from tracker.models import (
+    Tracker,
+    Comparison,
+    Favorite,
+    Interested,
+    Invitation,
+    UserViewedResume,
+)
+from resume.models import Resume, SkillInResume, Experience, Education
 from vacancy.models import Vacancy, SkillInVacancy
 
 
@@ -304,3 +312,178 @@ class InvitationSerializer(serializers.ModelSerializer):
 #             "candidate",
 #             "gender",
 #         )
+
+
+class InvitedSerializer(serializers.ModelSerializer):
+    """Сериализатор модели просматривал пользователь резюме."""
+
+    class Meta:
+        model = UserViewedResume
+        fields = ("id", "status")
+
+
+class Vacancy2Serializer(serializers.ModelSerializer):
+    """Сериализатор модели вакансии конкретного нанимателя."""
+
+    title = serializers.CharField(source="position")
+    newResumes = serializers.SerializerMethodField()
+    favourites = serializers.SerializerMethodField()
+    invited = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Vacancy
+        fields = (
+            "title",
+            "newResumes",
+            "favourites",
+            "invited",
+        )
+
+    def get_newResumes(
+        self, vacancy
+    ) -> list[int,]:
+        """Получение ids резюме, которые наниматель ещё не смотрел."""
+        resume_ids = UserViewedResume.objects.filter(
+            employer=vacancy.author
+        ).values_list("resume_id", flat=True)
+        return Resume.objects.exclude(id__in=resume_ids).values_list(
+            "id", flat=True
+        )
+
+    def get_favourites(
+        self, vacancy
+    ) -> list[int,]:
+        """Получение ids резюме, которые наниматель отметили."""
+        return Favorite.objects.filter(vacancy=vacancy).values_list(
+            "resume_id", flat=True
+        )
+
+    def get_invited(
+        self, vacancy
+    ) -> list[dict,]:
+        """Получение id резюме и его статус приглашения."""
+        res = Invitation.objects.filter(vacancy=vacancy).values_list(
+            "resume_id", "status"
+        )
+        return [
+            {"id": item[0], "status": settings.STATUS_INVITATION[item[1]][1]}
+            for item in res
+        ]
+
+
+class Resume2Serializer(serializers.ModelSerializer):
+    """Сериализатор модели вакансии конкретного нанимателя."""
+
+    name = serializers.CharField(source="candidate.username")
+    lastVisited = serializers.DateTimeField(source="candidate.last_visited")
+    interested = serializers.SerializerMethodField()
+    mainSkills = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Resume
+        fields = (
+            "name",
+            "photo",
+            "level",
+            "lastVisited",
+            "interested",
+            "mainSkills",
+        )
+
+    def get_interested(
+        self, resume
+    ) -> list[int,]:
+        """Получение ids резюме, которые наниматель отметили."""
+        return Interested.objects.filter(resume=resume).values_list(
+            "vacancy_id", flat=True
+        )
+
+    def get_mainSkills(
+        self, resume
+    ) -> list[(Skill, int),]:
+        """Получение главных навыков резюме для данной вакансии."""
+        vacancy_id = self.context["vacancy_id"]
+        print(vacancy_id)
+        return resume.get_main_skills(vacancy_id, settings.AMOUNT_MAIN_SKILLS)
+
+
+class ExperienceSerializer(serializers.ModelSerializer):
+    """Сериализатор опыт кандидата."""
+
+    class Meta:
+        model = Experience
+        fields = (
+            "position",
+            "period",
+            "duties",
+        )
+
+
+class DetailedResumeSerializer(serializers.ModelSerializer):
+    """Сериализатор модели подробного резюме."""
+
+    name = serializers.CharField(source="candidate.username")
+    age = serializers.CharField(source="get_age")
+    city = serializers.CharField(source="city.name")
+    jobType = serializers.SerializerMethodField()
+    contacts = serializers.CharField(source="telegram")
+    about = serializers.CharField(source="about_me")
+    skills = serializers.SerializerMethodField()
+    experience = serializers.SerializerMethodField()
+    education = serializers.SerializerMethodField()
+    lastVisited = serializers.DateTimeField(source="candidate.last_visited")
+    mainSkills = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Resume
+        fields = (
+            "name",
+            "photo",
+            "level",
+            "age",
+            "city",
+            "jobType",
+            "portfolio",
+            "contacts",
+            "about",
+            "skills",
+            "experience",
+            "education",
+            "lastVisited",
+            "mainSkills",
+        )
+
+    def get_jobType(self, resume):
+        return settings.TYPE_WORK[resume.status_type_work][1]
+
+    def get_skills(
+        self, resume
+    ) -> list[(Skill, int),]:
+        return list(
+            SkillInResume.objects.filter(resume=resume)
+            .order_by("-rating")
+            .values_list("skill__name", "rating")
+        )
+
+    def get_experience(self, resume) -> list[str]:
+        return Experience.objects.filter(resume=resume).values(
+            "position",
+            "period",
+            "duties",
+        )
+
+    def get_education(self, resume) -> list[str]:
+        return Education.objects.filter(resume=resume).values(
+            "grade",
+            "institution",
+            "period",
+            "speciality",
+        )
+
+    def get_mainSkills(
+        self, resume
+    ) -> list[(Skill, int),]:
+        """Получение главных навыков резюме для данной вакансии."""
+        vacancy_id = self.context["vacancy_id"]
+        print(vacancy_id)
+        return resume.get_main_skills(vacancy_id, settings.AMOUNT_MAIN_SKILLS)

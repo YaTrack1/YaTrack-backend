@@ -4,8 +4,8 @@ from django.db import models
 from django.conf import settings
 
 from user.models import User
-from core.models import Skill
-from vacancy.models import Vacancy
+from core.models import City, Skill
+from vacancy.models import Vacancy, SkillInVacancy
 
 
 class Resume(models.Model):
@@ -30,13 +30,14 @@ class Resume(models.Model):
         choices=settings.GENDER_FLAG,
         verbose_name="Пол",
     )
-    # city = models.ForeignKey(
-    #     City,
-    #     on_delete=models.SET_NULL,
-    #     verbose_name="Город",
-    # )
+    city = models.ForeignKey(
+        City,
+        on_delete=models.SET_NULL,
+        null=True,
+        verbose_name="Город",
+    )
     # grade = models.CharField("Грейд")
-    city = models.CharField(verbose_name="Город", max_length=50)
+    # city = models.CharField(verbose_name="Город", max_length=50)
     telegram = models.CharField(
         max_length=50,
         verbose_name="Телеграм",
@@ -89,7 +90,8 @@ class Resume(models.Model):
 
     def get_age(self) -> int:
         """Получить возраст кандидата."""
-        return (date.today() - self.birthday).year
+        age = date.today() - self.birthday
+        return int((age).days / 365.25)
 
     get_age.short_description = "Возраст"
 
@@ -108,7 +110,18 @@ class Resume(models.Model):
         Skill - id? name?
         rating - значение соотв. навыка
         """
-        return [("Навык 1", 100), ("Навык 5", 80), ("Навык 3", 70)]
+        vacancy = Vacancy.objects.get(id=vacancy)
+        skill_ids_vacancy = (
+            SkillInVacancy.objects.filter(vacancy=vacancy).order_by(
+                "-importance"
+            )[: settings.AMOUNT_MAIN_SKILLS]
+            # .values_list('importance', 'skill', 'skill__name')
+            .values_list("skill", flat=True)
+        )
+        skills_in_resume = SkillInResume.objects.filter(
+            resume=self, skill_id__in=list(skill_ids_vacancy)
+        ).values_list("skill__name", "rating")
+        return list(skills_in_resume)
 
     get_age.short_description = "Главные Навыки"
 

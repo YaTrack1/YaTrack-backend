@@ -53,7 +53,7 @@ INSTALLED_APPS = [
     "resume.apps.ResumeConfig",
     "core.apps.CoreConfig",
     "rest_framework",  # isort:ignore
-    "rest_framework.authtoken",  # isort:ignore
+    # "rest_framework.authtoken",  # isort:ignore
     # "djoser",  # isort:ignore
     "django_filters",  # isort:ignore
     "drf_yasg",  # isort:ignore
@@ -178,6 +178,9 @@ CORS_URLS_REGEX = r"^/api/.*$"
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
 ]
+CORS_ALLOWED_ORIGIN_REGEXES = [
+    r".*",
+]
 
 # Константы----------------------------
 # -------------------------------------
@@ -202,6 +205,8 @@ STATUS_INVITATION = [
     (2, "Отказ"),
     (3, "Ожидание"),
 ]
+
+AMOUNT_MAIN_SKILLS = 3
 
 # Юзер-админ
 MAIL_LENGTH = 255

@@ -8,7 +8,9 @@ from api.views import (
     # FavoriteViewset,
     # InvitationViewset,
     VacancyViewset,
+    Vacancy2ViewSet,
     ResumeViewset,
+    Resume2ViewSet,
 )
 
 app_name = "api"
@@ -47,6 +49,18 @@ router.register(
 #     InvitationViewset,
 #     basename="invitation",
 # )
+
+router.register(
+    r"employer/(?P<user_id>[\d]+)/vacancies",
+    Vacancy2ViewSet,
+    basename="vacancies",
+)
+
+router.register(
+    r"vacancy/(?P<vacancy_id>[\d]+)/resumes",
+    Resume2ViewSet,
+    basename="resumes",
+)
 
 urlpatterns = [
     re_path(r"^", include(router.urls)),
